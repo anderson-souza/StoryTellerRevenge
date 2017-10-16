@@ -15,15 +15,15 @@
 using UnityEngine;
 
 public class GVRDemoManager : MonoBehaviour {
-  public GameObject m_launchVrHomeButton;
-  public DemoInputManager m_demoInputManager;
+    public GameObject m_launchVrHomeButton;
+    public DemoInputManager m_demoInputManager;
 
-  void Start() {
+    void Start() {
 #if !UNITY_ANDROID || UNITY_EDITOR
-    if (m_launchVrHomeButton == null) {
-      return;
-    }
-    m_launchVrHomeButton.SetActive(false);
+        if (m_launchVrHomeButton == null) {
+            return;
+        }
+        m_launchVrHomeButton.SetActive(false);
 #else
     GvrDaydreamApi.CreateAsync((success) => {
       if (!success) {
@@ -32,7 +32,7 @@ public class GVRDemoManager : MonoBehaviour {
       }
     });
 #endif  // !UNITY_ANDROID || UNITY_EDITOR
-  }
+    }
 
 #if UNITY_ANDROID && !UNITY_EDITOR
   void Update() {
@@ -43,7 +43,7 @@ public class GVRDemoManager : MonoBehaviour {
   }
 #endif  // UNITY_ANDROID && !UNITY_EDITOR
 
-  public void LaunchVrHome() {
+    public void LaunchVrHome() {
 #if UNITY_ANDROID && !UNITY_EDITOR
     GvrDaydreamApi.LaunchVrHomeAsync((success) => {
       if (!success) {
@@ -52,5 +52,5 @@ public class GVRDemoManager : MonoBehaviour {
       }
     });
 #endif  // UNITY_ANDROID && !UNITY_EDITOR
-  }
+    }
 }

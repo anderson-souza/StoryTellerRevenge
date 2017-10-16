@@ -26,17 +26,17 @@ using UnityEngine;
 /// FadeScrollEffect - Change the opacity of the page linearly based on the scroll offset.
 /// ScaleScrollEffect - Change the scale of the page linearly based on the scroll offset.
 public abstract class BaseScrollEffect : MonoBehaviour {
-  public struct UpdateData {
-    public RectTransform page;
-    public int pageIndex;
-    public int pageCount;
-    public float pageOffset;
-    public float scrollOffset;
-    public float spacing;
-    public bool looping;
-    public bool isInteractable;
-    public float moveDistance;
-  }
+    public struct UpdateData {
+        public RectTransform page;
+        public int pageIndex;
+        public int pageCount;
+        public float pageOffset;
+        public float scrollOffset;
+        public float spacing;
+        public bool looping;
+        public bool isInteractable;
+        public float moveDistance;
+    }
 
-  public abstract void ApplyEffect(UpdateData updateData);
+    public abstract void ApplyEffect(UpdateData updateData);
 }

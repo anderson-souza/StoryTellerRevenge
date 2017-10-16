@@ -17,12 +17,12 @@
 // Simple static class to abstract out several jni calls that need to be shared
 // between different classes.
 public static class GvrActivityHelper {
-  public const string GVR_DLL_NAME = "gvr";
-  public const string PACKAGE_UNITY_PLAYER = "com.unity3d.player.UnityPlayer";
+    public const string GVR_DLL_NAME = "gvr";
+    public const string PACKAGE_UNITY_PLAYER = "com.unity3d.player.UnityPlayer";
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-  /// Returns the Android Activity used by the Unity device player. The caller is
-  /// responsible for memory-managing the returned AndroidJavaObject.
+/// Returns the Android Activity used by the Unity device player. The caller is
+/// responsible for memory-managing the returned AndroidJavaObject.
   public static AndroidJavaObject GetActivity() {
     AndroidJavaClass jc = new AndroidJavaClass(PACKAGE_UNITY_PLAYER);
     if (jc == null) {

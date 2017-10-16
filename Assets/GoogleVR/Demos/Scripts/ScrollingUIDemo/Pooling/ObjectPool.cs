@@ -24,112 +24,112 @@ using System.Collections.Generic;
 /// then create a subclass of ObjectPool to specialize it for a particular
 /// type of object. See _GameObjectPool_ as an example.
 public class ObjectPool<T> : IObjectPool where T : class, new() {
-  protected Stack<T> pool;
-  protected int capacity;
+    protected Stack<T> pool;
+    protected int capacity;
 
-  public int NumAllocatedObjects {
-    get {
-      return pool.Count;
-    }
-  }
-
-  public bool IsPoolEmpty {
-    get {
-      return pool.Count == 0;
-    }
-  }
-
-  public bool IsPoolFull {
-    get {
-      return pool.Count == capacity;
-    }
-  }
-
-  protected ObjectPool() {
-  }
-
-  public ObjectPool(int capacity) : this(capacity, 0) {
-  }
-
-  public ObjectPool(int capacity, int preAllocateAmount) {
-    Initialize(capacity, preAllocateAmount);
-  }
-
-  public T Borrow() {
-    if (IsPoolEmpty) {
-      return AllocateObject();
+    public int NumAllocatedObjects {
+        get {
+            return pool.Count;
+        }
     }
 
-    T obj = pool.Pop();
-    OnBorrowed(obj);
-
-    return obj;
-  }
-
-  public void Return(T obj) {
-    // Don't return object if pool is already full.
-    if (IsPoolFull) {
-      OnUnableToReturn(obj);
-      return;
+    public bool IsPoolEmpty {
+        get {
+            return pool.Count == 0;
+        }
     }
 
-    pool.Push(obj);
-    OnPooled(obj);
-  }
-
-  public void Clear() {
-    pool.Clear();
-  }
-
-  public void Allocate(int amount) {
-    int counter = 0;
-    while (counter < amount && !IsPoolFull) {
-      AddObject();
-    }
-  }
-
-  public virtual void Dispose() {
-  }
-
-  protected void Initialize(int capacity, int preAllocateAmount) {
-    if (capacity < 1) {
-      Debug.LogWarning("Capacity must be at least 1.");
-      capacity = 1;
+    public bool IsPoolFull {
+        get {
+            return pool.Count == capacity;
+        }
     }
 
-    pool = new Stack<T>(capacity);
-    this.capacity = capacity;
-
-    if (preAllocateAmount > capacity) {
-      Debug.LogWarning("preAllocateAmount cannot be higher than capacity.");
-      preAllocateAmount = capacity;
+    protected ObjectPool() {
     }
 
-    Allocate(preAllocateAmount);
-  }
-
-  protected virtual void OnBorrowed(T borrowedObject) {
-  }
-
-  protected virtual void OnPooled(T returnedObject) {
-  }
-
-  protected virtual void OnUnableToReturn(T returnedObject) {
-  }
-
-  protected virtual T AllocateObject() {
-    return new T();
-  }
-
-  private void AddObject() {
-    if (IsPoolFull) {
-      Debug.LogWarning("Cannot addObject, pool is already full.");
-      return;
+    public ObjectPool(int capacity) : this(capacity, 0) {
     }
 
-    T obj = AllocateObject();
+    public ObjectPool(int capacity, int preAllocateAmount) {
+        Initialize(capacity, preAllocateAmount);
+    }
 
-    pool.Push(obj);
-    OnPooled(obj);
-  }
+    public T Borrow() {
+        if (IsPoolEmpty) {
+            return AllocateObject();
+        }
+
+        T obj = pool.Pop();
+        OnBorrowed(obj);
+
+        return obj;
+    }
+
+    public void Return(T obj) {
+        // Don't return object if pool is already full.
+        if (IsPoolFull) {
+            OnUnableToReturn(obj);
+            return;
+        }
+
+        pool.Push(obj);
+        OnPooled(obj);
+    }
+
+    public void Clear() {
+        pool.Clear();
+    }
+
+    public void Allocate(int amount) {
+        int counter = 0;
+        while (counter < amount && !IsPoolFull) {
+            AddObject();
+        }
+    }
+
+    public virtual void Dispose() {
+    }
+
+    protected void Initialize(int capacity, int preAllocateAmount) {
+        if (capacity < 1) {
+            Debug.LogWarning("Capacity must be at least 1.");
+            capacity = 1;
+        }
+
+        pool = new Stack<T>(capacity);
+        this.capacity = capacity;
+
+        if (preAllocateAmount > capacity) {
+            Debug.LogWarning("preAllocateAmount cannot be higher than capacity.");
+            preAllocateAmount = capacity;
+        }
+
+        Allocate(preAllocateAmount);
+    }
+
+    protected virtual void OnBorrowed(T borrowedObject) {
+    }
+
+    protected virtual void OnPooled(T returnedObject) {
+    }
+
+    protected virtual void OnUnableToReturn(T returnedObject) {
+    }
+
+    protected virtual T AllocateObject() {
+        return new T();
+    }
+
+    private void AddObject() {
+        if (IsPoolFull) {
+            Debug.LogWarning("Cannot addObject, pool is already full.");
+            return;
+        }
+
+        T obj = AllocateObject();
+
+        pool.Push(obj);
+        OnPooled(obj);
+    }
 }

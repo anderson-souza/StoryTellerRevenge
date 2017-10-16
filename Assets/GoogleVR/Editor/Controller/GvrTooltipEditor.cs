@@ -19,11 +19,11 @@ using UnityEditor;
 /// changes based on handedness, and to make it easy to preview the handedness settings.
 [CustomEditor(typeof(GvrTooltip)), CanEditMultipleObjects]
 public class GvrTooltipEditor : Editor {
-  public override void OnInspectorGUI() {
-    DrawDefaultInspector();
-    EditorGUILayout.LabelField("Current Handedness", GvrSettings.Handedness.ToString(), EditorStyles.boldLabel);
-    if (GUILayout.Button("Change Handedness")) {
-      EditorWindow.GetWindow(typeof(GvrEditorSettings));
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+        EditorGUILayout.LabelField("Current Handedness", GvrSettings.Handedness.ToString(), EditorStyles.boldLabel);
+        if (GUILayout.Button("Change Handedness")) {
+            EditorWindow.GetWindow(typeof(GvrEditorSettings));
+        }
     }
-  }
 }

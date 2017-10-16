@@ -17,73 +17,73 @@ using System.Collections.Generic;
 
 /// Manages a collection of object pools and provides access to them by name.
 public class ObjectPoolManager : MonoBehaviour {
-  private static ObjectPoolManager instance;
+    private static ObjectPoolManager instance;
 
-  public static ObjectPoolManager Instance {
-    get {
-      return instance;
-    }
-  }
-
-  private Dictionary<string, IObjectPool> pools = new Dictionary<string, IObjectPool>();
-
-  public bool ContainsPool(string poolName) {
-    return pools.ContainsKey(poolName);
-  }
-
-  public T GetPool<T>(string poolName)
-    where T : class, IObjectPool {
-    IObjectPool pool;
-    if (pools.TryGetValue(poolName, out pool)) {
-      T result = pool as T;
-      if (result == null) {
-        Debug.LogError("Pool " + poolName + " is not of type " + typeof(T));
-      }
-
-      return result;
+    public static ObjectPoolManager Instance {
+        get {
+            return instance;
+        }
     }
 
-    return null;
-  }
+    private Dictionary<string, IObjectPool> pools = new Dictionary<string, IObjectPool>();
 
-  public void AddPool(string poolName, IObjectPool pool) {
-    if (ContainsPool(poolName)) {
-      Debug.LogError("Cannot add pool " + poolName + " because it already exists.");
-      return;
+    public bool ContainsPool(string poolName) {
+        return pools.ContainsKey(poolName);
     }
 
-    pools.Add(poolName, pool);
-  }
+    public T GetPool<T>(string poolName)
+        where T : class, IObjectPool {
+        IObjectPool pool;
+        if (pools.TryGetValue(poolName, out pool)) {
+            T result = pool as T;
+            if (result == null) {
+                Debug.LogError("Pool " + poolName + " is not of type " + typeof(T));
+            }
 
-  public void RemovePool(string poolName) {
-    IObjectPool pool;
-    if (!pools.TryGetValue(poolName, out pool)) {
-      return;
+            return result;
+        }
+
+        return null;
     }
 
-    pool.Dispose();
-    pools.Remove(poolName);
-  }
+    public void AddPool(string poolName, IObjectPool pool) {
+        if (ContainsPool(poolName)) {
+            Debug.LogError("Cannot add pool " + poolName + " because it already exists.");
+            return;
+        }
 
-  public void RemoveAllPools() {
-    var enumerator = pools.GetEnumerator();
-    while (enumerator.MoveNext()) {
-      IObjectPool pool = enumerator.Current.Value;
-      pool.Dispose();
+        pools.Add(poolName, pool);
     }
-    pools.Clear();
-  }
 
-  void Awake() {
-    if (instance != null) {
-      Debug.LogError("Cannot have multiple instances of ObjectPoolManager.");
-      Destroy(this);
-      return;
+    public void RemovePool(string poolName) {
+        IObjectPool pool;
+        if (!pools.TryGetValue(poolName, out pool)) {
+            return;
+        }
+
+        pool.Dispose();
+        pools.Remove(poolName);
     }
-    instance = this;
-  }
 
-  void OnDestroy() {
-    RemoveAllPools();
-  }
+    public void RemoveAllPools() {
+        var enumerator = pools.GetEnumerator();
+        while (enumerator.MoveNext()) {
+            IObjectPool pool = enumerator.Current.Value;
+            pool.Dispose();
+        }
+        pools.Clear();
+    }
+
+    void Awake() {
+        if (instance != null) {
+            Debug.LogError("Cannot have multiple instances of ObjectPoolManager.");
+            Destroy(this);
+            return;
+        }
+        instance = this;
+    }
+
+    void OnDestroy() {
+        RemoveAllPools();
+    }
 }

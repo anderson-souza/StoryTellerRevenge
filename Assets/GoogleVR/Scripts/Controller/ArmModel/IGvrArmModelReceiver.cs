@@ -13,5 +13,5 @@
 // limitations under the License.
 
 public interface IGvrArmModelReceiver {
-  GvrBaseArmModel ArmModel { get; set; }
+    GvrBaseArmModel ArmModel { get; set; }
 }

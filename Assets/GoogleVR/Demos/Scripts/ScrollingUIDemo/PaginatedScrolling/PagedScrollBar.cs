@@ -20,69 +20,69 @@ using UnityEngine.UI;
 /// The Scrollbar will also automatically update when the PagedScrollRect
 /// is scrolled directly.
 public class PagedScrollBar : Scrollbar {
-  public const string PAGED_SCROLL_RECT_PROP_NAME = "pagedScrollRect";
+    public const string PAGED_SCROLL_RECT_PROP_NAME = "pagedScrollRect";
 
-  [SerializeField]
-  private PagedScrollRect pagedScrollRect;
+    [SerializeField]
+    private PagedScrollRect pagedScrollRect;
 
-  private bool isDragging = false;
+    private bool isDragging = false;
 
-  private const float LERP_SPEED = 12.0f;
+    private const float LERP_SPEED = 12.0f;
 
-  private bool IsDragging {
-    get {
-      return isDragging;
-    }
-    set {
-      if (isDragging == value) {
-        return;
-      }
+    private bool IsDragging {
+        get {
+            return isDragging;
+        }
+        set {
+            if (isDragging == value) {
+                return;
+            }
 
-      isDragging = value;
+            isDragging = value;
 
-      if (!isDragging && pagedScrollRect != null) {
-        pagedScrollRect.SetScrollOffsetOverride(null);
-      }
-    }
-  }
-
-  void Update() {
-    if (pagedScrollRect == null) {
-      Debug.LogWarning("PagedScrollRect must be set.");
-      return;
+            if (!isDragging && pagedScrollRect != null) {
+                pagedScrollRect.SetScrollOffsetOverride(null);
+            }
+        }
     }
 
+    void Update() {
+        if (pagedScrollRect == null) {
+            Debug.LogWarning("PagedScrollRect must be set.");
+            return;
+        }
 
-    // Update the size of the handle in case the PageCount has changed.
-    float desiredSize = 1.0f / pagedScrollRect.PageCount;
-    if (size != desiredSize) {
-      size = desiredSize;
+
+        // Update the size of the handle in case the PageCount has changed.
+        float desiredSize = 1.0f / pagedScrollRect.PageCount;
+        if (size != desiredSize) {
+            size = desiredSize;
+        }
+
+        if (IsDragging) {
+            float offset = value * (pagedScrollRect.PageCount - 1) * pagedScrollRect.PageSpacing;
+            pagedScrollRect.SetScrollOffsetOverride(offset);
+        } else {
+            // If the PageCount is 1 make sure we don't divide by zero by just setting the value to 0 directly.
+            if (pagedScrollRect.PageCount == 1) {
+                value = 0.0f;
+            } else {
+                // Calculate the desired a value of the scrollbar.
+                float desiredValue = (float) pagedScrollRect.ActivePageIndex / (pagedScrollRect.PageCount - 1);
+
+                // Animate towards the desired value.
+                value = Mathf.Lerp(value, desiredValue, Time.deltaTime * LERP_SPEED);
+            }
+        }
     }
 
-    if (IsDragging) {
-      float offset = value * (pagedScrollRect.PageCount - 1) * pagedScrollRect.PageSpacing;
-      pagedScrollRect.SetScrollOffsetOverride(offset);
-    } else {
-      // If the PageCount is 1 make sure we don't divide by zero by just setting the value to 0 directly.
-      if (pagedScrollRect.PageCount == 1) {
-        value = 0.0f;
-      } else {
-        // Calculate the desired a value of the scrollbar.
-        float desiredValue = (float) pagedScrollRect.ActivePageIndex / (pagedScrollRect.PageCount - 1);
-
-        // Animate towards the desired value.
-        value = Mathf.Lerp(value, desiredValue, Time.deltaTime * LERP_SPEED);
-      }
+    public override void OnPointerDown(UnityEngine.EventSystems.PointerEventData eventData) {
+        base.OnPointerDown(eventData);
+        IsDragging = true;
     }
-  }
 
-  public override void OnPointerDown(UnityEngine.EventSystems.PointerEventData eventData) {
-    base.OnPointerDown(eventData);
-    IsDragging = true;
-  }
-
-  public override void OnPointerUp(UnityEngine.EventSystems.PointerEventData eventData) {
-    base.OnPointerUp(eventData);
-    IsDragging = false;
-  }
+    public override void OnPointerUp(UnityEngine.EventSystems.PointerEventData eventData) {
+        base.OnPointerUp(eventData);
+        IsDragging = false;
+    }
 }

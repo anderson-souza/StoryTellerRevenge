@@ -17,26 +17,26 @@ using System;
 
 // General GVR helpers.
 public class GvrCardboardHelpers {
-  /// Manual recenter for Cardboard.
-  /// Do not use for controller-based Daydream recenter - Google VR Services will take care
-  /// of that, no C# implementation behaviour is needed.
-  /// Apply the recenteringOffset to the Camera or its parent at runtime.
-  public static void Recenter() {
+    /// Manual recenter for Cardboard.
+    /// Do not use for controller-based Daydream recenter - Google VR Services will take care
+    /// of that, no C# implementation behaviour is needed.
+    /// Apply the recenteringOffset to the Camera or its parent at runtime.
+    public static void Recenter() {
 #if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
     gvr_reset_tracking(VRDevice.GetNativePtr());
 #endif  // (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
-    Debug.Log("Use GvrEditorEmulator for in-editor recentering");
-  }
+        Debug.Log("Use GvrEditorEmulator for in-editor recentering");
+    }
 
-  /// Set the Cardboard viewer params.
-  /// Example URI for 2015 Cardboard Viewer V2:
-  /// http://google.com/cardboard/cfg?p=CgZHb29nbGUSEkNhcmRib2FyZCBJL08gMjAxNR0rGBU9JQHegj0qEAAASEIAAEhCAABIQgAASEJYADUpXA89OggeZnc-Ej6aPlAAYAM
-  public static void SetViewerProfile(String viewerProfileUri) {
+    /// Set the Cardboard viewer params.
+    /// Example URI for 2015 Cardboard Viewer V2:
+    /// http://google.com/cardboard/cfg?p=CgZHb29nbGUSEkNhcmRib2FyZCBJL08gMjAxNR0rGBU9JQHegj0qEAAASEIAAEhCAABIQgAASEJYADUpXA89OggeZnc-Ej6aPlAAYAM
+    public static void SetViewerProfile(String viewerProfileUri) {
 #if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
     gvr_set_default_viewer_profile(VRDevice.GetNativePtr(), viewerProfileUri);
 #endif  // (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
-    Debug.Log("Unavailable for non-Android and non-iOS builds");
-  }
+        Debug.Log("Unavailable for non-Android and non-iOS builds");
+    }
 
 #if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
   [DllImport(GvrActivityHelper.GVR_DLL_NAME)]

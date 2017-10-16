@@ -18,52 +18,52 @@ using UnityEngine;
 // Usage: Set GvrControllerPointer > Controller as the pointer field, and
 // the camera to recenter (e.g. Main Camera).
 public class GvrRecenterOnlyController : MonoBehaviour {
-  private Quaternion recenteringOffset = Quaternion.identity;
+    private Quaternion recenteringOffset = Quaternion.identity;
 
-  [Tooltip("The controller to recenter")]
-  public GameObject pointer;
+    [Tooltip("The controller to recenter")]
+    public GameObject pointer;
 
-  [Tooltip("The camera to recenter")]
-  public Camera cam;
+    [Tooltip("The camera to recenter")]
+    public Camera cam;
 
-  void Start() {
-    if (cam == null) {
-      cam = Camera.main;
+    void Start() {
+        if (cam == null) {
+            cam = Camera.main;
+        }
     }
-  }
 
-  void Update() {
-    if (cam == null || pointer == null
-       || GvrControllerInput.State != GvrConnectionState.Connected) {
-      return;
-    }
-    // Daydream is loaded only on deivce, not in editor.
+    void Update() {
+        if (cam == null || pointer == null
+            || GvrControllerInput.State != GvrConnectionState.Connected) {
+            return;
+        }
+        // Daydream is loaded only on deivce, not in editor.
 #if UNITY_ANDROID && !UNITY_EDITOR
         if (VRSettings.loadedDeviceName != "daydream")
         {
             return;
         }
 #endif
-    if (GvrControllerInput.Recentered) {
-      pointer.transform.rotation = recenteringOffset;
-      cam.transform.parent.rotation = recenteringOffset;
-      return;
-    }
+        if (GvrControllerInput.Recentered) {
+            pointer.transform.rotation = recenteringOffset;
+            cam.transform.parent.rotation = recenteringOffset;
+            return;
+        }
 
 #if !UNITY_EDITOR
     if (GvrControllerInput.HomeButtonDown || GvrControllerInput.HomeButtonState) {
       return;
     }
 #endif  // !UNITY_EDITOR
-    recenteringOffset = Quaternion.Euler(0, cam.transform.rotation.eulerAngles.y, 0);
-  }
-
-  void OnDisable() {
-    recenteringOffset = Quaternion.identity;
-    if (cam != null && pointer != null) {
-      pointer.transform.rotation = recenteringOffset;
-      cam.transform.parent.rotation = recenteringOffset;
+        recenteringOffset = Quaternion.Euler(0, cam.transform.rotation.eulerAngles.y, 0);
     }
-  }
+
+    void OnDisable() {
+        recenteringOffset = Quaternion.identity;
+        if (cam != null && pointer != null) {
+            pointer.transform.rotation = recenteringOffset;
+            cam.transform.parent.rotation = recenteringOffset;
+        }
+    }
 
 }

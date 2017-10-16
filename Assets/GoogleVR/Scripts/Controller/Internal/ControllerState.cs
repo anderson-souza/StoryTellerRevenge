@@ -17,81 +17,80 @@ using System;
 
 /// @cond
 namespace Gvr.Internal {
-  /// Internal representation of the controller's current state.
-  /// This representation is used by controller providers to represent the controller's state.
-  ///
-  /// The fields in this class have identical meanings to their correspondents in the GVR C API,
-  /// so they are not redundantly documented here.
-  class ControllerState {
-    internal GvrConnectionState connectionState = GvrConnectionState.Disconnected;
-    internal GvrControllerApiStatus apiStatus = GvrControllerApiStatus.Unavailable;
-    internal Quaternion orientation = Quaternion.identity;
-    internal Vector3 gyro = Vector3.zero;
-    internal Vector3 accel = Vector3.zero;
-    internal bool isTouching = false;
-    internal Vector2 touchPos = Vector2.zero;
-    internal bool touchDown = false;
-    internal bool touchUp = false;
-    internal bool recentering = false;
-    internal bool recentered = false;
+    /// Internal representation of the controller's current state.
+    /// This representation is used by controller providers to represent the controller's state.
+    ///
+    /// The fields in this class have identical meanings to their correspondents in the GVR C API,
+    /// so they are not redundantly documented here.
+    class ControllerState {
+        internal GvrConnectionState connectionState = GvrConnectionState.Disconnected;
+        internal GvrControllerApiStatus apiStatus = GvrControllerApiStatus.Unavailable;
+        internal Quaternion orientation = Quaternion.identity;
+        internal Vector3 gyro = Vector3.zero;
+        internal Vector3 accel = Vector3.zero;
+        internal bool isTouching = false;
+        internal Vector2 touchPos = Vector2.zero;
+        internal bool touchDown = false;
+        internal bool touchUp = false;
+        internal bool recentering = false;
+        internal bool recentered = false;
 
-    internal bool clickButtonState = false;
-    internal bool clickButtonDown = false;
-    internal bool clickButtonUp = false;
+        internal bool clickButtonState = false;
+        internal bool clickButtonDown = false;
+        internal bool clickButtonUp = false;
 
-    internal bool appButtonState = false;
-    internal bool appButtonDown = false;
-    internal bool appButtonUp = false;
+        internal bool appButtonState = false;
+        internal bool appButtonDown = false;
+        internal bool appButtonUp = false;
 
-    // Always false for the emulator.
-    internal bool homeButtonDown = false;
-    internal bool homeButtonState = false;
+        // Always false for the emulator.
+        internal bool homeButtonDown = false;
+        internal bool homeButtonState = false;
 
-    internal string errorDetails = "";
-    internal IntPtr gvrPtr = IntPtr.Zero;
+        internal string errorDetails = "";
+        internal IntPtr gvrPtr = IntPtr.Zero;
 
-    internal bool isCharging = false;
-    internal GvrControllerBatteryLevel batteryLevel = GvrControllerBatteryLevel.Unknown;
+        internal bool isCharging = false;
+        internal GvrControllerBatteryLevel batteryLevel = GvrControllerBatteryLevel.Unknown;
 
-    public void CopyFrom(ControllerState other) {
-      connectionState = other.connectionState;
-      apiStatus = other.apiStatus;
-      orientation = other.orientation;
-      gyro = other.gyro;
-      accel = other.accel;
-      isTouching = other.isTouching;
-      touchPos = other.touchPos;
-      touchDown = other.touchDown;
-      touchUp = other.touchUp;
-      recentering = other.recentering;
-      recentered = other.recentered;
-      clickButtonState = other.clickButtonState;
-      clickButtonDown = other.clickButtonDown;
-      clickButtonUp = other.clickButtonUp;
-      appButtonState = other.appButtonState;
-      appButtonDown = other.appButtonDown;
-      appButtonUp = other.appButtonUp;
-      homeButtonDown = other.homeButtonDown;
-      homeButtonState = other.homeButtonState;
-      errorDetails = other.errorDetails;
-      gvrPtr = other.gvrPtr;
-      isCharging = other.isCharging;
-      batteryLevel = other.batteryLevel;
+        public void CopyFrom(ControllerState other) {
+            connectionState = other.connectionState;
+            apiStatus = other.apiStatus;
+            orientation = other.orientation;
+            gyro = other.gyro;
+            accel = other.accel;
+            isTouching = other.isTouching;
+            touchPos = other.touchPos;
+            touchDown = other.touchDown;
+            touchUp = other.touchUp;
+            recentering = other.recentering;
+            recentered = other.recentered;
+            clickButtonState = other.clickButtonState;
+            clickButtonDown = other.clickButtonDown;
+            clickButtonUp = other.clickButtonUp;
+            appButtonState = other.appButtonState;
+            appButtonDown = other.appButtonDown;
+            appButtonUp = other.appButtonUp;
+            homeButtonDown = other.homeButtonDown;
+            homeButtonState = other.homeButtonState;
+            errorDetails = other.errorDetails;
+            gvrPtr = other.gvrPtr;
+            isCharging = other.isCharging;
+            batteryLevel = other.batteryLevel;
+        }
+
+        /// Resets the transient state (the state variables that represent events, and which are true
+        /// for only one frame).
+        public void ClearTransientState() {
+            touchDown = false;
+            touchUp = false;
+            recentered = false;
+            clickButtonDown = false;
+            clickButtonUp = false;
+            appButtonDown = false;
+            appButtonUp = false;
+            homeButtonDown = false;
+        }
     }
-
-    /// Resets the transient state (the state variables that represent events, and which are true
-    /// for only one frame).
-    public void ClearTransientState() {
-      touchDown = false;
-      touchUp = false;
-      recentered = false;
-      clickButtonDown = false;
-      clickButtonUp = false;
-      appButtonDown = false;
-      appButtonUp = false;
-      homeButtonDown = false;
-    }
-  }
 }
 /// @endcond
-

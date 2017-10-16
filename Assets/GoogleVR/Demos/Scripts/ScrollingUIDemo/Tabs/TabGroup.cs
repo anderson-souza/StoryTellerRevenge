@@ -23,57 +23,57 @@ using System.Linq;
 ///
 [RequireComponent(typeof(ToggleGroup))]
 public class TabGroup : MonoBehaviour {
-  /// This Tab will be the tab that starts open
-  /// when the scene is initially loaded.
-  [Tooltip("The tab that should start open.")]
-  [SerializeField]
-  private Tab startingTab;
+    /// This Tab will be the tab that starts open
+    /// when the scene is initially loaded.
+    [Tooltip("The tab that should start open.")]
+    [SerializeField]
+    private Tab startingTab;
 
-  /// This transform represents the parent that all tab pages
-  /// will be added under when the tab is opened.
-  [Tooltip("The parent for all of the tab's pages.")]
-  [SerializeField]
-  private Transform tabPageParent;
+    /// This transform represents the parent that all tab pages
+    /// will be added under when the tab is opened.
+    [Tooltip("The parent for all of the tab's pages.")]
+    [SerializeField]
+    private Transform tabPageParent;
 
-  private ToggleGroup toggleGroup;
+    private ToggleGroup toggleGroup;
 
-  /// Returns the parent of all tab pages.
-  public Transform TabPageParent {
-    get {
-      return tabPageParent;
+    /// Returns the parent of all tab pages.
+    public Transform TabPageParent {
+        get {
+            return tabPageParent;
+        }
     }
-  }
 
-  /// Returns the currently open Tab.
-  public Tab OpenTab {
-    get {
-      Toggle toggle = toggleGroup.ActiveToggles().FirstOrDefault();
-      if (toggle == null) {
-        return null;
-      }
+    /// Returns the currently open Tab.
+    public Tab OpenTab {
+        get {
+            Toggle toggle = toggleGroup.ActiveToggles().FirstOrDefault();
+            if (toggle == null) {
+                return null;
+            }
 
-      return toggle.GetComponent<Tab>();
+            return toggle.GetComponent<Tab>();
+        }
     }
-  }
 
-  /// Returns the currently open page.
-  public GameObject OpenTabPage {
-    get {
-      Tab tab = OpenTab;
-      if (tab == null) {
-        return null;
-      }
+    /// Returns the currently open page.
+    public GameObject OpenTabPage {
+        get {
+            Tab tab = OpenTab;
+            if (tab == null) {
+                return null;
+            }
 
-      return tab.Page;
+            return tab.Page;
+        }
     }
-  }
 
-  void Awake() {
-    toggleGroup = GetComponent<ToggleGroup>();
-  }
+    void Awake() {
+        toggleGroup = GetComponent<ToggleGroup>();
+    }
 
-  void Start() {
-    startingTab.Open();
-  }
+    void Start() {
+        startingTab.Open();
+    }
 
 }

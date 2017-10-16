@@ -15,148 +15,147 @@
 using System;
 using UnityEngine;
 
-[System.Obsolete("Replaced by GvrControllerInput.")]
+[Obsolete("Replaced by GvrControllerInput.")]
 [AddComponentMenu("")]
 public class GvrController : GvrControllerInput {
-  public new static GvrConnectionState State {
-    get {
-      return GvrControllerInput.State;
+    public new static GvrConnectionState State {
+        get {
+            return GvrControllerInput.State;
+        }
     }
-  }
 
-  public new static GvrControllerApiStatus ApiStatus {
-    get {
-      return GvrControllerInput.ApiStatus;
+    public new static GvrControllerApiStatus ApiStatus {
+        get {
+            return GvrControllerInput.ApiStatus;
+        }
     }
-  }
 
-  public new static Quaternion Orientation {
-    get {
-      return GvrControllerInput.Orientation;
+    public new static Quaternion Orientation {
+        get {
+            return GvrControllerInput.Orientation;
+        }
     }
-  }
 
-  public new static Vector3 Gyro {
-    get {
-      return GvrControllerInput.Gyro;
+    public new static Vector3 Gyro {
+        get {
+            return GvrControllerInput.Gyro;
+        }
     }
-  }
 
-  public new static Vector3 Accel {
-    get {
-      return GvrControllerInput.Accel;
+    public new static Vector3 Accel {
+        get {
+            return GvrControllerInput.Accel;
+        }
     }
-  }
 
-  public new static bool IsTouching {
-    get {
-      return GvrControllerInput.IsTouching;
+    public new static bool IsTouching {
+        get {
+            return GvrControllerInput.IsTouching;
+        }
     }
-  }
 
-  public new static bool TouchDown {
-    get {
-      return GvrControllerInput.TouchDown;
+    public new static bool TouchDown {
+        get {
+            return GvrControllerInput.TouchDown;
+        }
     }
-  }
 
-  public new static bool TouchUp {
-    get {
-      return GvrControllerInput.TouchUp;
+    public new static bool TouchUp {
+        get {
+            return GvrControllerInput.TouchUp;
+        }
     }
-  }
 
-  public new static Vector2 TouchPos {
-    get {
-      return GvrControllerInput.TouchPos;
+    public new static Vector2 TouchPos {
+        get {
+            return GvrControllerInput.TouchPos;
+        }
     }
-  }
 
-  public new static bool Recentering {
-    get {
-      return GvrControllerInput.Recentering;
+    public new static bool Recentering {
+        get {
+            return GvrControllerInput.Recentering;
+        }
     }
-  }
 
-  public new static bool Recentered {
-    get {
-      return GvrControllerInput.Recentered;
+    public new static bool Recentered {
+        get {
+            return GvrControllerInput.Recentered;
+        }
     }
-  }
 
-  public new static bool ClickButton {
-    get {
-      return GvrControllerInput.ClickButton;
+    public new static bool ClickButton {
+        get {
+            return GvrControllerInput.ClickButton;
+        }
     }
-  }
 
-  public new static bool ClickButtonDown {
-    get {
-      return GvrControllerInput.ClickButtonDown;
+    public new static bool ClickButtonDown {
+        get {
+            return GvrControllerInput.ClickButtonDown;
+        }
     }
-  }
 
-  public new static bool ClickButtonUp {
-    get {
-      return GvrControllerInput.ClickButtonUp;
+    public new static bool ClickButtonUp {
+        get {
+            return GvrControllerInput.ClickButtonUp;
+        }
     }
-  }
 
-  public new static bool AppButton {
-    get {
-      return GvrControllerInput.AppButton;
+    public new static bool AppButton {
+        get {
+            return GvrControllerInput.AppButton;
+        }
     }
-  }
 
-  public new static bool AppButtonDown {
-    get {
-      return GvrControllerInput.AppButtonDown;
+    public new static bool AppButtonDown {
+        get {
+            return GvrControllerInput.AppButtonDown;
+        }
     }
-  }
 
-  public new static bool AppButtonUp {
-    get {
-      return GvrControllerInput.AppButtonUp;
+    public new static bool AppButtonUp {
+        get {
+            return GvrControllerInput.AppButtonUp;
+        }
     }
-  }
 
-  public new static bool HomeButtonDown {
-    get {
-      return GvrControllerInput.HomeButtonDown;
+    public new static bool HomeButtonDown {
+        get {
+            return GvrControllerInput.HomeButtonDown;
+        }
     }
-  }
 
-  public new static bool HomeButtonState {
-    get {
-      return GvrControllerInput.HomeButtonState;
+    public new static bool HomeButtonState {
+        get {
+            return GvrControllerInput.HomeButtonState;
+        }
     }
-  }
 
-  public new static string ErrorDetails {
-    get {
-      return GvrControllerInput.ErrorDetails;
+    public new static string ErrorDetails {
+        get {
+            return GvrControllerInput.ErrorDetails;
+        }
     }
-  }
 
-  // Returns the GVR C library controller state pointer (gvr_controller_state*).
-  public new static IntPtr StatePtr {
-    get {
-      return GvrControllerInput.StatePtr;
+    // Returns the GVR C library controller state pointer (gvr_controller_state*).
+    public new static IntPtr StatePtr {
+        get {
+            return GvrControllerInput.StatePtr;
+        }
     }
-  }
 
-  /// If true, the user is currently touching the controller's touchpad.
-  public new static bool IsCharging {
-    get {
-      return GvrControllerInput.IsCharging;
+    /// If true, the user is currently touching the controller's touchpad.
+    public new static bool IsCharging {
+        get {
+            return GvrControllerInput.IsCharging;
+        }
     }
-  }
 
-  /// If true, the user is currently touching the controller's touchpad.
-  public new static GvrControllerBatteryLevel BatteryLevel {
-    get {
-      return GvrControllerInput.BatteryLevel;
+    /// If true, the user is currently touching the controller's touchpad.
+    public new static GvrControllerBatteryLevel BatteryLevel {
+        get {
+            return GvrControllerInput.BatteryLevel;
+        }
     }
-  }
 }
-

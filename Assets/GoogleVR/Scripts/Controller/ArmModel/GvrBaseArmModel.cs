@@ -17,31 +17,31 @@ using UnityEngine;
 /// of the physical controller, and predicts the location of the controller and pointer
 /// to determine where to place the controller model within the scene.
 public abstract class GvrBaseArmModel : MonoBehaviour {
-  /// Vector to represent the controller's location relative to
-  /// the user's head position.
-  public abstract Vector3 ControllerPositionFromHead { get; }
+    /// Vector to represent the controller's location relative to
+    /// the user's head position.
+    public abstract Vector3 ControllerPositionFromHead { get; }
 
-  /// Quaternion to represent the controller's rotation relative to
-  /// the user's head position.
-  public abstract Quaternion ControllerRotationFromHead { get; }
+    /// Quaternion to represent the controller's rotation relative to
+    /// the user's head position.
+    public abstract Quaternion ControllerRotationFromHead { get; }
 
-  /// Vector to represent the pointer's location relative to
-  /// the controller.
-  public abstract Vector3 PointerPositionFromController { get; }
+    /// Vector to represent the pointer's location relative to
+    /// the controller.
+    public abstract Vector3 PointerPositionFromController { get; }
 
-  /// Quaternion to represent the pointer's rotation relative to
-  /// the controller.
-  public abstract Quaternion PointerRotationFromController { get; }
+    /// Quaternion to represent the pointer's rotation relative to
+    /// the controller.
+    public abstract Quaternion PointerRotationFromController { get; }
 
-  /// The suggested rendering alpha value of the controller.
-  /// This is to prevent the controller from intersecting the face.
-  /// The range is always 0 - 1 but can be scaled by individual
-  /// objects when using the GvrBaseControllerVisual script.
-  public abstract float PreferredAlpha { get; }
+    /// The suggested rendering alpha value of the controller.
+    /// This is to prevent the controller from intersecting the face.
+    /// The range is always 0 - 1 but can be scaled by individual
+    /// objects when using the GvrBaseControllerVisual script.
+    public abstract float PreferredAlpha { get; }
 
-  /// The suggested rendering alpha value of the controller tooltips.
-  /// This is to only display the tooltips when the player is looking
-  /// at the controller, and also to prevent the tooltips from intersecting the
-  /// player's face.
-  public abstract float TooltipAlphaValue { get; }
+    /// The suggested rendering alpha value of the controller tooltips.
+    /// This is to only display the tooltips when the player is looking
+    /// at the controller, and also to prevent the tooltips from intersecting the
+    /// player's face.
+    public abstract float TooltipAlphaValue { get; }
 }

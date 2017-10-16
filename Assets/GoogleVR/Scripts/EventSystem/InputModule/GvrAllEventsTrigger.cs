@@ -20,93 +20,93 @@ using UnityEngine.EventSystems;
 /// Makes it possible to handle EventSystem events globally.
 public class GvrAllEventsTrigger : MonoBehaviour {
 
-  [Serializable]
-  public class TriggerEvent : UnityEvent<GameObject, PointerEventData>
-  {}
+    [Serializable]
+    public class TriggerEvent : UnityEvent<GameObject, PointerEventData>
+    {}
 
-  public TriggerEvent OnPointerClick;
-  public TriggerEvent OnPointerDown;
-  public TriggerEvent OnPointerUp;
-  public TriggerEvent OnPointerEnter;
-  public TriggerEvent OnPointerExit;
-  public TriggerEvent OnScroll;
+    public TriggerEvent OnPointerClick;
+    public TriggerEvent OnPointerDown;
+    public TriggerEvent OnPointerUp;
+    public TriggerEvent OnPointerEnter;
+    public TriggerEvent OnPointerExit;
+    public TriggerEvent OnScroll;
 
-  private bool listenersAdded;
+    private bool listenersAdded;
 
-  void OnEnable() {
-    AddListeners();
-  }
-
-  void OnDisable() {
-    RemoveListeners();
-  }
-
-  void Start() {
-    // The eventExecutor may not be available during OnEnable when the script is first created.
-    AddListeners();
-  }
-
-  private void AddListeners() {
-    GvrEventExecutor eventExecutor = GvrPointerInputModule.FindEventExecutor();
-    if (eventExecutor == null) {
-      return;
+    void OnEnable() {
+        AddListeners();
     }
 
-    if (listenersAdded) {
-      return;
+    void OnDisable() {
+        RemoveListeners();
     }
 
-    eventExecutor.OnPointerClick += OnPointerClickHandler;
-    eventExecutor.OnPointerDown += OnPointerDownHandler;
-    eventExecutor.OnPointerUp += OnPointerUpHandler;
-    eventExecutor.OnPointerEnter += OnPointerEnterHandler;
-    eventExecutor.OnPointerExit += OnPointerExitHandler;
-    eventExecutor.OnScroll += OnScrollHandler;
-
-    listenersAdded = true;
-  }
-
-  private void RemoveListeners() {
-    GvrEventExecutor eventExecutor = GvrPointerInputModule.FindEventExecutor();
-    if (eventExecutor == null) {
-      return;
+    void Start() {
+        // The eventExecutor may not be available during OnEnable when the script is first created.
+        AddListeners();
     }
 
-    if (!listenersAdded) {
-      return;
+    private void AddListeners() {
+        GvrEventExecutor eventExecutor = GvrPointerInputModule.FindEventExecutor();
+        if (eventExecutor == null) {
+            return;
+        }
+
+        if (listenersAdded) {
+            return;
+        }
+
+        eventExecutor.OnPointerClick += OnPointerClickHandler;
+        eventExecutor.OnPointerDown += OnPointerDownHandler;
+        eventExecutor.OnPointerUp += OnPointerUpHandler;
+        eventExecutor.OnPointerEnter += OnPointerEnterHandler;
+        eventExecutor.OnPointerExit += OnPointerExitHandler;
+        eventExecutor.OnScroll += OnScrollHandler;
+
+        listenersAdded = true;
     }
 
-    eventExecutor.OnPointerClick -= OnPointerClickHandler;
-    eventExecutor.OnPointerDown -= OnPointerDownHandler;
-    eventExecutor.OnPointerUp -= OnPointerUpHandler;
-    eventExecutor.OnPointerEnter -= OnPointerEnterHandler;
-    eventExecutor.OnPointerExit -= OnPointerExitHandler;
-    eventExecutor.OnScroll -= OnScrollHandler;
+    private void RemoveListeners() {
+        GvrEventExecutor eventExecutor = GvrPointerInputModule.FindEventExecutor();
+        if (eventExecutor == null) {
+            return;
+        }
 
-    listenersAdded = false;
-  }
+        if (!listenersAdded) {
+            return;
+        }
 
-  private void OnPointerClickHandler(GameObject target, PointerEventData eventData) {
-    OnPointerClick.Invoke(target, eventData);
-  }
+        eventExecutor.OnPointerClick -= OnPointerClickHandler;
+        eventExecutor.OnPointerDown -= OnPointerDownHandler;
+        eventExecutor.OnPointerUp -= OnPointerUpHandler;
+        eventExecutor.OnPointerEnter -= OnPointerEnterHandler;
+        eventExecutor.OnPointerExit -= OnPointerExitHandler;
+        eventExecutor.OnScroll -= OnScrollHandler;
 
-  private void OnPointerDownHandler(GameObject target, PointerEventData eventData) {
-    OnPointerDown.Invoke(target, eventData);
-  }
+        listenersAdded = false;
+    }
 
-  private void OnPointerUpHandler(GameObject target, PointerEventData eventData) {
-    OnPointerUp.Invoke(target, eventData);
-  }
+    private void OnPointerClickHandler(GameObject target, PointerEventData eventData) {
+        OnPointerClick.Invoke(target, eventData);
+    }
 
-  private void OnPointerEnterHandler(GameObject target, PointerEventData eventData) {
-    OnPointerEnter.Invoke(target, eventData);
-  }
+    private void OnPointerDownHandler(GameObject target, PointerEventData eventData) {
+        OnPointerDown.Invoke(target, eventData);
+    }
 
-  private void OnPointerExitHandler(GameObject target, PointerEventData eventData) {
-    OnPointerExit.Invoke(target, eventData);
-  }
+    private void OnPointerUpHandler(GameObject target, PointerEventData eventData) {
+        OnPointerUp.Invoke(target, eventData);
+    }
 
-  private void OnScrollHandler(GameObject target, PointerEventData eventData) {
-    OnScroll.Invoke(target, eventData);
-  }
+    private void OnPointerEnterHandler(GameObject target, PointerEventData eventData) {
+        OnPointerEnter.Invoke(target, eventData);
+    }
+
+    private void OnPointerExitHandler(GameObject target, PointerEventData eventData) {
+        OnPointerExit.Invoke(target, eventData);
+    }
+
+    private void OnScrollHandler(GameObject target, PointerEventData eventData) {
+        OnScroll.Invoke(target, eventData);
+    }
 }

@@ -27,44 +27,44 @@ using UnityEngine.Assertions;
 /// the end of the frame (a common occurence), it isn't reparented an extra time.
 /// Reparenting an object can cause a significant amount of memory allocations and CPU load.
 public class GameObjectPool : ObjectPool<GameObject> {
-  private GameObject prefab;
-  private GameObjectPoolController poolController;
+    private GameObject prefab;
+    private GameObjectPoolController poolController;
 
-  public GameObjectPool(GameObject prefab, int capacity)
-    : this(prefab, capacity, 0) {
-  }
-
-  public GameObjectPool(GameObject prefab, int capacity, int preAllocateAmount) {
-    Assert.IsNotNull(prefab);
-    this.prefab = prefab;
-
-    GameObject poolContainerObject = new GameObject(prefab.name + " Pool");
-    poolController = poolContainerObject.AddComponent<GameObjectPoolController>();
-    poolController.Initialize(capacity);
-
-    Initialize(capacity, preAllocateAmount);
-  }
-
-  public override void Dispose() {
-    if (poolController != null) {
-      GameObject.Destroy(poolController.gameObject);
+    public GameObjectPool(GameObject prefab, int capacity)
+        : this(prefab, capacity, 0) {
     }
-  }
 
-  protected override void OnBorrowed(GameObject borrowedObject) {
-    poolController.OnBorrowed(borrowedObject);
-  }
+    public GameObjectPool(GameObject prefab, int capacity, int preAllocateAmount) {
+        Assert.IsNotNull(prefab);
+        this.prefab = prefab;
 
-  protected override void OnPooled(GameObject pooledObject) {
-    poolController.OnPooled(pooledObject);
-  }
+        GameObject poolContainerObject = new GameObject(prefab.name + " Pool");
+        poolController = poolContainerObject.AddComponent<GameObjectPoolController>();
+        poolController.Initialize(capacity);
 
-  protected override void OnUnableToReturn(GameObject returnedObject) {
-    GameObject.Destroy(returnedObject);
-  }
+        Initialize(capacity, preAllocateAmount);
+    }
 
-  protected override GameObject AllocateObject() {
-    GameObject obj = GameObject.Instantiate(prefab);
-    return obj;
-  }
+    public override void Dispose() {
+        if (poolController != null) {
+            Object.Destroy(poolController.gameObject);
+        }
+    }
+
+    protected override void OnBorrowed(GameObject borrowedObject) {
+        poolController.OnBorrowed(borrowedObject);
+    }
+
+    protected override void OnPooled(GameObject pooledObject) {
+        poolController.OnPooled(pooledObject);
+    }
+
+    protected override void OnUnableToReturn(GameObject returnedObject) {
+        Object.Destroy(returnedObject);
+    }
+
+    protected override GameObject AllocateObject() {
+        GameObject obj = Object.Instantiate(prefab);
+        return obj;
+    }
 }

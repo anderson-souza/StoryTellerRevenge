@@ -20,81 +20,81 @@ using UnityEngine.EventSystems;
 /// This is a workaround for the fact that the Dropdown component doesn't work with custom raycasters
 /// because it internally adds two GraphicRaycasters.
 public class GvrDropdown : Dropdown {
-  private GameObject currentBlocker;
+    private GameObject currentBlocker;
 
-  public override void OnPointerClick(PointerEventData eventData) {
-    base.OnPointerClick(eventData);
-    FixTemplateAndBlockerRaycasters();
-  }
-
-  public override void OnSubmit(BaseEventData eventData) {
-    base.OnSubmit(eventData);
-    FixTemplateAndBlockerRaycasters();
-  }
-
-  private void FixTemplateAndBlockerRaycasters() {
-    if (template != null) {
-      FixRaycaster(template.gameObject, false);
-    }
-    FixRaycaster(currentBlocker, true);
-  }
-
-  protected override GameObject CreateBlocker(Canvas rootCanvas) {
-    currentBlocker = base.CreateBlocker(rootCanvas);
-    return currentBlocker;
-  }
-
-  protected override GameObject CreateDropdownList(GameObject template) {
-    GameObject dropdown = base.CreateDropdownList(template);
-    FixRaycaster(dropdown, false);
-    return dropdown;
-  }
-
-  private void FixRaycaster(GameObject go, bool shouldCopyProperties) {
-    if (go == null) {
-      return;
+    public override void OnPointerClick(PointerEventData eventData) {
+        base.OnPointerClick(eventData);
+        FixTemplateAndBlockerRaycasters();
     }
 
-    GraphicRaycaster oldRaycaster = go.GetComponent<GraphicRaycaster>();
-    Destroy(oldRaycaster);
-
-    bool addedRaycaster;
-    GvrPointerGraphicRaycaster raycaster;
-    raycaster = GetOrAddComponent<GvrPointerGraphicRaycaster>(go, out addedRaycaster);
-
-    if (shouldCopyProperties) {
-      GvrPointerGraphicRaycaster templateRaycaster = GetTemplateRaycaster();
-      if (addedRaycaster && templateRaycaster != null) {
-        CopyRaycasterProperties(templateRaycaster, raycaster);
-      }
-    }
-  }
-
-  private GvrPointerGraphicRaycaster GetTemplateRaycaster() {
-    if (template == null) {
-      return null;
+    public override void OnSubmit(BaseEventData eventData) {
+        base.OnSubmit(eventData);
+        FixTemplateAndBlockerRaycasters();
     }
 
-    return template.GetComponent<GvrPointerGraphicRaycaster>();
-  }
-
-  private void CopyRaycasterProperties(GvrPointerGraphicRaycaster source, GvrPointerGraphicRaycaster dest) {
-    if (source == null || dest == null) {
-      return;
+    private void FixTemplateAndBlockerRaycasters() {
+        if (template != null) {
+            FixRaycaster(template.gameObject, false);
+        }
+        FixRaycaster(currentBlocker, true);
     }
 
-    dest.blockingMask = source.blockingMask;
-    dest.blockingObjects = source.blockingObjects;
-    dest.ignoreReversedGraphics = source.ignoreReversedGraphics;
-  }
-
-  private static T GetOrAddComponent<T>(GameObject go, out bool addedComponent) where T : Component {
-    T comp = go.GetComponent<T>();
-    addedComponent = false;
-    if (!comp) {
-      comp = go.AddComponent<T>();
-      addedComponent = true;
+    protected override GameObject CreateBlocker(Canvas rootCanvas) {
+        currentBlocker = base.CreateBlocker(rootCanvas);
+        return currentBlocker;
     }
-    return comp;
-  }
+
+    protected override GameObject CreateDropdownList(GameObject template) {
+        GameObject dropdown = base.CreateDropdownList(template);
+        FixRaycaster(dropdown, false);
+        return dropdown;
+    }
+
+    private void FixRaycaster(GameObject go, bool shouldCopyProperties) {
+        if (go == null) {
+            return;
+        }
+
+        GraphicRaycaster oldRaycaster = go.GetComponent<GraphicRaycaster>();
+        Destroy(oldRaycaster);
+
+        bool addedRaycaster;
+        GvrPointerGraphicRaycaster raycaster;
+        raycaster = GetOrAddComponent<GvrPointerGraphicRaycaster>(go, out addedRaycaster);
+
+        if (shouldCopyProperties) {
+            GvrPointerGraphicRaycaster templateRaycaster = GetTemplateRaycaster();
+            if (addedRaycaster && templateRaycaster != null) {
+                CopyRaycasterProperties(templateRaycaster, raycaster);
+            }
+        }
+    }
+
+    private GvrPointerGraphicRaycaster GetTemplateRaycaster() {
+        if (template == null) {
+            return null;
+        }
+
+        return template.GetComponent<GvrPointerGraphicRaycaster>();
+    }
+
+    private void CopyRaycasterProperties(GvrPointerGraphicRaycaster source, GvrPointerGraphicRaycaster dest) {
+        if (source == null || dest == null) {
+            return;
+        }
+
+        dest.blockingMask = source.blockingMask;
+        dest.blockingObjects = source.blockingObjects;
+        dest.ignoreReversedGraphics = source.ignoreReversedGraphics;
+    }
+
+    private static T GetOrAddComponent<T>(GameObject go, out bool addedComponent) where T : Component {
+        T comp = go.GetComponent<T>();
+        addedComponent = false;
+        if (!comp) {
+            comp = go.AddComponent<T>();
+            addedComponent = true;
+        }
+        return comp;
+    }
 }

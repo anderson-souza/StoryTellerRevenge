@@ -15,19 +15,19 @@
 using UnityEngine;
 
 public static class GvrUIHelpers {
-  /// Finds the meters scale for the local coordinate system
-  /// of the root canvas that contains the canvasObject passed in.
-  public static float GetMetersToCanvasScale(Transform canvasObject) {
-    Canvas canvas = canvasObject.GetComponentInParent<Canvas>();
-    if (canvas == null) {
-      return 0.0f;
-    }
+    /// Finds the meters scale for the local coordinate system
+    /// of the root canvas that contains the canvasObject passed in.
+    public static float GetMetersToCanvasScale(Transform canvasObject) {
+        Canvas canvas = canvasObject.GetComponentInParent<Canvas>();
+        if (canvas == null) {
+            return 0.0f;
+        }
 
-    if (!canvas.isRootCanvas) {
-      canvas = canvas.rootCanvas;
-    }
+        if (!canvas.isRootCanvas) {
+            canvas = canvas.rootCanvas;
+        }
 
-    float metersToCanvasScale = canvas.transform.localScale.x;
-    return metersToCanvasScale;
-  }
+        float metersToCanvasScale = canvas.transform.localScale.x;
+        return metersToCanvasScale;
+    }
 }

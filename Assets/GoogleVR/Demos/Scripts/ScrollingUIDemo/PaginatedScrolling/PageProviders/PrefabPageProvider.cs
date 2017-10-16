@@ -15,35 +15,35 @@
 using UnityEngine;
 
 public class PrefabPageProvider : MonoBehaviour, IPageProvider {
-  /// The prefabs for each page.
-  /// The pages are ordered based on the order of this array.
-  [Tooltip("The prefabs for each page.")]
-  public GameObject[] prefabs;
+    /// The prefabs for each page.
+    /// The pages are ordered based on the order of this array.
+    [Tooltip("The prefabs for each page.")]
+    public GameObject[] prefabs;
 
-  /// The spacing between pages in local coordinates.
-  [Tooltip("The spacing between pages.")]
-  public float spacing = 2000.0f;
+    /// The spacing between pages in local coordinates.
+    [Tooltip("The spacing between pages.")]
+    public float spacing = 2000.0f;
 
-  public float GetSpacing() {
-    return spacing;
-  }
+    public float GetSpacing() {
+        return spacing;
+    }
 
-  public int GetNumberOfPages() {
-    return prefabs.Length;
-  }
+    public int GetNumberOfPages() {
+        return prefabs.Length;
+    }
 
-  public RectTransform ProvidePage(int index) {
-    GameObject pageTransform = GameObject.Instantiate(prefabs[index]);
-    RectTransform page = pageTransform.GetComponent<RectTransform>();
+    public RectTransform ProvidePage(int index) {
+        GameObject pageTransform = Instantiate(prefabs[index]);
+        RectTransform page = pageTransform.GetComponent<RectTransform>();
 
-    Vector2 middleAnchor = new Vector2(0.5f, 0.5f);
-    page.anchorMax = middleAnchor;
-    page.anchorMin = middleAnchor;
+        Vector2 middleAnchor = new Vector2(0.5f, 0.5f);
+        page.anchorMax = middleAnchor;
+        page.anchorMin = middleAnchor;
 
-    return page;
-  }
+        return page;
+    }
 
-  public void RemovePage(int index, RectTransform page) {
-    GameObject.Destroy(page.gameObject);
-  }
+    public void RemovePage(int index, RectTransform page) {
+        Destroy(page.gameObject);
+    }
 }

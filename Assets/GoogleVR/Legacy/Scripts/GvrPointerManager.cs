@@ -18,16 +18,16 @@ using UnityEngine;
 [System.Obsolete("Replaced by GvrPointerInputModule.")]
 [AddComponentMenu("")]
 public class GvrPointerManager : MonoBehaviour {
-  public static GvrBasePointer Pointer {
-    get {
-      return GvrPointerInputModule.Pointer as GvrBasePointer;
+    public static GvrBasePointer Pointer {
+        get {
+            return GvrPointerInputModule.Pointer as GvrBasePointer;
+        }
+        set {
+            GvrPointerInputModule.Pointer = value;
+        }
     }
-    set {
-      GvrPointerInputModule.Pointer = value;
-    }
-  }
 
-  public static void OnPointerCreated(GvrBasePointer createdPointer) {
-    GvrPointerInputModule.OnPointerCreated(createdPointer);
-  }
+    public static void OnPointerCreated(GvrBasePointer createdPointer) {
+        GvrPointerInputModule.OnPointerCreated(createdPointer);
+    }
 }

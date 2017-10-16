@@ -16,20 +16,20 @@ using UnityEngine;
 
 /// Class that can scale the pages of a PagedScrollRect based on the page's offset.
 public class ScaleScrollEffect : BaseScrollEffect {
-  [Range(0.0f, 1.0f)]
-  [Tooltip("The scale of the page when it is one page-length away.")]
-  public float minScale;
+    [Range(0.0f, 1.0f)]
+    [Tooltip("The scale of the page when it is one page-length away.")]
+    public float minScale;
 
-  public override void ApplyEffect(BaseScrollEffect.UpdateData updateData) {
-    // Calculate the difference.
-    float difference = updateData.scrollOffset - updateData.pageOffset;
+    public override void ApplyEffect(UpdateData updateData) {
+        // Calculate the difference.
+        float difference = updateData.scrollOffset - updateData.pageOffset;
 
-    // Calculate the scale for this page.
-    float ratioScrolled = Mathf.Abs(difference) / updateData.spacing;
-    float scale = ((1.0f - ratioScrolled) * (1.0f - minScale)) + minScale;
-    scale = Mathf.Clamp(scale, 0.0f, 1.0f);
+        // Calculate the scale for this page.
+        float ratioScrolled = Mathf.Abs(difference) / updateData.spacing;
+        float scale = ((1.0f - ratioScrolled) * (1.0f - minScale)) + minScale;
+        scale = Mathf.Clamp(scale, 0.0f, 1.0f);
 
-    // Update the scale.
-    updateData.page.localScale = new Vector3(scale, scale, scale);
-  }
+        // Update the scale.
+        updateData.page.localScale = new Vector3(scale, scale, scale);
+    }
 }

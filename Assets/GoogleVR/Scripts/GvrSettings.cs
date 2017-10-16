@@ -22,32 +22,32 @@ using UnityEditor;
 #endif  // UNITY_EDITOR
 
 public static class GvrSettings {
-  private const string METHOD_GET_WINDOW = "getWindow";
-  private const string METHOD_RUN_ON_UI_THREAD = "runOnUiThread";
-  private const string METHOD_SET_SUSTAINED_PERFORMANCE_MODE = "setSustainedPerformanceMode";
+    private const string METHOD_GET_WINDOW = "getWindow";
+    private const string METHOD_RUN_ON_UI_THREAD = "runOnUiThread";
+    private const string METHOD_SET_SUSTAINED_PERFORMANCE_MODE = "setSustainedPerformanceMode";
 
-  // Viewer type.
-  public enum ViewerPlatformType {
-    Error = -1,  // Plugin-only value; does not exist in the NDK.
-    Cardboard,
-    Daydream
-  }
-  public static ViewerPlatformType ViewerPlatform {
-    // Expose a setter only for the editor emulator, for development testing purposes.
+    // Viewer type.
+    public enum ViewerPlatformType {
+        Error = -1,  // Plugin-only value; does not exist in the NDK.
+        Cardboard,
+        Daydream
+    }
+    public static ViewerPlatformType ViewerPlatform {
+        // Expose a setter only for the editor emulator, for development testing purposes.
 #if UNITY_EDITOR
-    get {
-      return editorEmulatorOnlyViewerPlatformType;
-    }
-    set {
-      editorEmulatorOnlyViewerPlatformType = value;
-    }
+        get {
+            return editorEmulatorOnlyViewerPlatformType;
+        }
+        set {
+            editorEmulatorOnlyViewerPlatformType = value;
+        }
 #elif !UNITY_ANDROID
-    // Running in non-Android player.
+// Running in non-Android player.
     get {
       return ViewerPlatformType.Error;
     }
 #else
-    // Running on Android.
+// Running on Android.
     get {
       IntPtr gvrContextPtr = VRDevice.GetNativePtr();
       if (gvrContextPtr == IntPtr.Zero) {
@@ -57,43 +57,43 @@ public static class GvrSettings {
       return (ViewerPlatformType) gvr_get_viewer_type(gvrContextPtr);
     }
 #endif  // UNITY_EDITOR
-  }
+    }
 #if UNITY_EDITOR
-  private static ViewerPlatformType editorEmulatorOnlyViewerPlatformType =
-    ViewerPlatformType.Daydream;
+    private static ViewerPlatformType editorEmulatorOnlyViewerPlatformType =
+        ViewerPlatformType.Daydream;
 #endif  // UNITY_EDITOR
 
-  // The developer is expected to remember whether sustained performance mode is set
-  // at runtime, via the checkbox in Player Settings.
-  // This state may be recorded here in a future release.
-  public static bool SustainedPerformanceMode {
-    set {
-      SetSustainedPerformanceMode(value);
+    // The developer is expected to remember whether sustained performance mode is set
+    // at runtime, via the checkbox in Player Settings.
+    // This state may be recorded here in a future release.
+    public static bool SustainedPerformanceMode {
+        set {
+            SetSustainedPerformanceMode(value);
+        }
     }
-  }
 
-  // Handedness preference.
-  public enum UserPrefsHandedness {
-    Error = -1,  // Plugin-only value, does not exist in the NDK.
-    Right,
-    Left
-  }
-  public static UserPrefsHandedness Handedness {
+    // Handedness preference.
+    public enum UserPrefsHandedness {
+        Error = -1,  // Plugin-only value, does not exist in the NDK.
+        Right,
+        Left
+    }
+    public static UserPrefsHandedness Handedness {
 #if UNITY_EDITOR
-    // Expose a setter only for the editor emulator, for development testing purposes.
-    get {
-      return (UserPrefsHandedness)EditorPrefs.GetInt(EMULATOR_HANDEDNESS_PREF_NAME, (int)UserPrefsHandedness.Right);
-    }
-    set {
-      EditorPrefs.SetInt(EMULATOR_HANDEDNESS_PREF_NAME, (int)value);
-    }
+        // Expose a setter only for the editor emulator, for development testing purposes.
+        get {
+            return (UserPrefsHandedness)EditorPrefs.GetInt(EMULATOR_HANDEDNESS_PREF_NAME, (int)UserPrefsHandedness.Right);
+        }
+        set {
+            EditorPrefs.SetInt(EMULATOR_HANDEDNESS_PREF_NAME, (int)value);
+        }
 #elif !UNITY_ANDROID
-    // Running in non-Android player.
+// Running in non-Android player.
     get {
       return UserPrefsHandedness.Error;
     }
 #else
-    // Running on Android.
+// Running on Android.
     get {
       IntPtr gvrContextPtr = VRDevice.GetNativePtr();
       if (gvrContextPtr == IntPtr.Zero) {
@@ -110,13 +110,13 @@ public static class GvrSettings {
       return (UserPrefsHandedness) gvr_user_prefs_get_controller_handedness(gvrUserPrefsPtr);
     }
 #endif  // UNITY_EDITOR
-  }
+    }
 #if UNITY_EDITOR
-  // This allows developers to test handedness in the editor emulator.
-  private const string EMULATOR_HANDEDNESS_PREF_NAME = "GoogleVREditorEmulatorHandedness";
+    // This allows developers to test handedness in the editor emulator.
+    private const string EMULATOR_HANDEDNESS_PREF_NAME = "GoogleVREditorEmulatorHandedness";
 #endif  // UNITY_EDITOR
 
-  private static void SetSustainedPerformanceMode(bool enabled) {
+    private static void SetSustainedPerformanceMode(bool enabled) {
 #if UNITY_ANDROID && !UNITY_EDITOR
     AndroidJavaObject androidActivity = null;
     try {
@@ -140,7 +140,7 @@ public static class GvrSettings {
       })
     );
 #endif  // UNITY_ANDROID && !UNITY_EDITOR
-  }
+    }
 
 #if UNITY_ANDROID && !UNITY_EDITOR
   [DllImport(GvrActivityHelper.GVR_DLL_NAME)]

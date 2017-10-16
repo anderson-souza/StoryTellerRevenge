@@ -18,18 +18,18 @@ using System;
 /// collection of Object Pools. Description of Object Pools design pattern is
 /// described at https://en.wikipedia.org/wiki/Object_pool_pattern.
 public interface IObjectPool : IDisposable {
-  /// The numver of objects that are currently allocated in the pool.
-  int NumAllocatedObjects { get; }
+    /// The numver of objects that are currently allocated in the pool.
+    int NumAllocatedObjects { get; }
 
-  /// Returns true if the pool currently has no objects in it.
-  bool IsPoolEmpty { get; }
+    /// Returns true if the pool currently has no objects in it.
+    bool IsPoolEmpty { get; }
 
-  /// Returns true if the NumAllocatedObjects is equal to the capaciy of the pool.
-  bool IsPoolFull { get; }
+    /// Returns true if the NumAllocatedObjects is equal to the capaciy of the pool.
+    bool IsPoolFull { get; }
 
-  /// Clears all of the allocated objects from the pool.
-  void Clear();
+    /// Clears all of the allocated objects from the pool.
+    void Clear();
 
-  /// Allocates amount objects in the pool.
-  void Allocate(int amount);
+    /// Allocates amount objects in the pool.
+    void Allocate(int amount);
 }

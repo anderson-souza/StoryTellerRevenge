@@ -16,13 +16,13 @@ using UnityEngine;
 
 public class VideoPlayerReference : MonoBehaviour {
 
-  public GvrVideoPlayerTexture player;
+    public GvrVideoPlayerTexture player;
 
-  void Awake() {
+    void Awake() {
 #if !UNITY_5_2
-    GetComponentInChildren<VideoControlsManager>(true).Player = player;
+        GetComponentInChildren<VideoControlsManager>(true).Player = player;
 #else
     GetComponentInChildren<VideoControlsManager>().Player = player;
 #endif
-  }
+    }
 }

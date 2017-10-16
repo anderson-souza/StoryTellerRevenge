@@ -16,40 +16,40 @@ using UnityEngine;
 
 public abstract class GvrBaseControllerVisual : MonoBehaviour, IGvrArmModelReceiver {
 
-  /// This is the preferred, maximum alpha value the object should have
-  /// when it is a comfortable distance from the head.
-  [Range(0.0f, 1.0f)]
-  public float maximumAlpha = 1.0f;
+    /// This is the preferred, maximum alpha value the object should have
+    /// when it is a comfortable distance from the head.
+    [Range(0.0f, 1.0f)]
+    public float maximumAlpha = 1.0f;
 
-  public GvrBaseArmModel ArmModel { get; set; }
+    public GvrBaseArmModel ArmModel { get; set; }
 
-  public float PreferredAlpha{
-    get{
-      return ArmModel != null ? ArmModel.PreferredAlpha : 1.0f;
+    public float PreferredAlpha{
+        get{
+            return ArmModel != null ? ArmModel.PreferredAlpha : 1.0f;
+        }
     }
-  }
 
-  /// Amount of normalized alpha transparency to change per second.
-  private const float DELTA_ALPHA = 4.0f;
+    /// Amount of normalized alpha transparency to change per second.
+    private const float DELTA_ALPHA = 4.0f;
 
-  protected virtual void Awake() {
+    protected virtual void Awake() {
 
-  }
+    }
 
-  void OnEnable() {
-    GvrControllerInput.OnPostControllerInputUpdated += OnPostControllerInputUpdated;
-  }
+    void OnEnable() {
+        GvrControllerInput.OnPostControllerInputUpdated += OnPostControllerInputUpdated;
+    }
 
-  void OnDisable() {
-    GvrControllerInput.OnPostControllerInputUpdated -= OnPostControllerInputUpdated;
-  }
+    void OnDisable() {
+        GvrControllerInput.OnPostControllerInputUpdated -= OnPostControllerInputUpdated;
+    }
 
-  /// Override this method to update materials and other visual changes
-  /// that need to happen every frame.
-  public abstract void OnVisualUpdate(bool updateImmediately = false);
+    /// Override this method to update materials and other visual changes
+    /// that need to happen every frame.
+    public abstract void OnVisualUpdate(bool updateImmediately = false);
 
-  private void OnPostControllerInputUpdated() {
-    OnVisualUpdate();
-  }
+    private void OnPostControllerInputUpdated() {
+        OnVisualUpdate();
+    }
 
 }

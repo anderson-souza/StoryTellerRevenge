@@ -16,6 +16,6 @@ using UnityEngine;
 using System;
 
 public interface IUITransition {
-  void TransitionIn(Transform toTransition, Action completeCallback, Action interruptCallback);
-  void TransitionOut(Transform toTransition, Action completeCallback, Action interruptCallback);
+    void TransitionIn(Transform toTransition, Action completeCallback, Action interruptCallback);
+    void TransitionOut(Transform toTransition, Action completeCallback, Action interruptCallback);
 }
