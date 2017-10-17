@@ -2,50 +2,67 @@
 using UnityEngine;
 using UnityEngine.Video;
 
-public class VideoSphereController : MonoBehaviour
-{
+public class VideoSphereController : MonoBehaviour {
     private VideoPlayer _videoPlayer;
 
     private TitleController _titleController;
-    readonly Dictionary<string, string> _videoDictionary = new Dictionary<string, string>();
+    private int _actualVideo;
+    private ParticleSystem _particleSystem;
+
+    private readonly List<Videos> _videoses = new List<Videos>();
 
     // Use this for initialization
-    void Start()
-    {
+    void Start() {
         _videoPlayer = FindObjectOfType<VideoPlayer>();
         _titleController = FindObjectOfType<TitleController>();
+        _particleSystem = FindObjectOfType<ParticleSystem>();
 
-        //The key value will be the name for the title
-        _videoDictionary.Add("Car",
-            "file://E:/Udacity/360 Media Production Assets/13 - Car (1.1 GB)/carExported.mp4"); // 1
-        _videoDictionary.Add("Waterfall", ""); // 2
-        _videoDictionary.Add("Rock", ""); // 3
-        _videoDictionary.Add("Cliff", ""); // 4
-        _videoDictionary.Add("Lava Field", ""); // 5
+        _videoses.Add(new Videos("Car",
+            "https://youtu.be/QIbZatwsEgU"));
+        _videoses.Add(new Videos("Waterfall", ""));
+        _videoses.Add(new Videos("Rock", ""));
+        _videoses.Add(new Videos("Cliff", ""));
+        _videoses.Add(new Videos("Lava Field", ""));
 
-        NewVideo("Car", _videoDictionary["Car"]);
+        NewVideo(0);
+
+        // Each time we reach the end, calls the function EndReached
+        _videoPlayer.loopPointReached += EndReached;
     }
 
-    public void NewVideo(string title, string url)
-    {
-        _titleController.ChangeTitle(title);
-        _videoPlayer.url = url;
+    public void NewVideo(int position) {
+        Debug.Log("Started a new video");
+        _actualVideo = position;
+        if (_actualVideo == 0) { //If is the first video, play the Particles
+            _particleSystem.Play();
+        }
+        else {
+            _particleSystem.Stop();
+        }
+        _titleController.ChangeTitle(_videoses[position].Title); //Change the title
+        _videoPlayer.url = _videoses[position].Url;
         PlayVideo();
     }
 
-    public void PlayVideo()
-    {
+    public void PlayVideo() {
         _videoPlayer.Play();
     }
 
-    public void PauseVideo()
-    {
+    public void PauseVideo() {
         _videoPlayer.Pause();
     }
 
-    public void RestartVideo()
-    {
+    public void RestartVideo() {
         _videoPlayer.Stop();
         _videoPlayer.Play();
+    }
+
+    private void EndReached(VideoPlayer vp) {
+        if (_videoses.Count < _actualVideo) {
+            NewVideo(_actualVideo++);
+        }
+        else {
+            //Show Credits
+        }
     }
 }

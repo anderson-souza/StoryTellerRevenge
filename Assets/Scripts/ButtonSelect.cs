@@ -10,7 +10,6 @@ public class ButtonSelect : MonoBehaviour {
         if (!_backgroundImage) {
             _backgroundImage = gameObject.transform.Find("selectionBackground").gameObject;
             _backgroundImage.GetComponent<Image>().fillAmount = 0;
-            Debug.Log("Encontrei a imagem: " + _backgroundImage);
         }
     }
 
@@ -21,7 +20,6 @@ public class ButtonSelect : MonoBehaviour {
     public void OnGazeExit() {
         StopCoroutine("BackgroundTransition");
         _backgroundImage.GetComponent<Image>().fillAmount = 0;
-        Debug.Log("Entrei no onGazeExit");
     }
 
     private IEnumerator BackgroundTransition() {

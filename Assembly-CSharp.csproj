@@ -169,6 +169,7 @@
     <Compile Include="Assets\GoogleVR\Scripts\Utilities\GvrUIHelpers.cs" />
     <Compile Include="Assets\GoogleVR\Scripts\Video\GvrVideoPlayerTexture.cs" />
     <Compile Include="Assets\Scripts\ButtonSelect.cs" />
+    <Compile Include="Assets\Scripts\Videos.cs" />
     <Compile Include="Assets\TitleController.cs" />
     <Compile Include="Assets\VideoSphereController.cs" />
     <None Include="Assets\FlippyShader.shader" />

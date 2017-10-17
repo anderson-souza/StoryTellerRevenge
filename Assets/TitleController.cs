@@ -1,36 +1,35 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TitleController : MonoBehaviour
 {
-    private Text _movieName;
+    private Text _videoName;
 
     void Start()
     {
-        if (_movieName == null)
+        if (_videoName == null)
         {
-            _movieName = gameObject.GetComponentInChildren<Text>();
+            _videoName = gameObject.GetComponentInChildren<Text>();
         }
     }
 
     public void ChangeTitle(string title)
     {
-        _movieName.text = title;
+        _videoName.text = title;
         FadeInOutCanvas();
     }
 
     private void FadeInOutCanvas()
     {
-        StartCoroutine("FadeInCanvas");
+        StartCoroutine("FadeCanvas");
     }
 
-    IEnumerator FadeInCanvas()
+    IEnumerator FadeCanvas()
     {
         float start = Time.time;
         float elapsed = 0;
-        float duration = 1.5f;
+        const float duration = 1.5f;
         while (elapsed < duration)
         {
             elapsed = Time.time - start;
