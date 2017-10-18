@@ -16,14 +16,14 @@ using UnityEngine;
 
 // Ensures correct app and scene setup.
 public class DemoSceneManager : MonoBehaviour {
-    void Start() {
-        Input.backButtonLeavesApp = true;
-    }
+  void Start() {
+    Input.backButtonLeavesApp = true;
+  }
 
-    void Update() {
-        // Exit when (X) is tapped.
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            Application.Quit();
-        }
+  void Update() {
+    // Exit when (X) is tapped.
+    if (Input.GetKeyDown(KeyCode.Escape)) {
+      Application.Quit();
     }
+  }
 }

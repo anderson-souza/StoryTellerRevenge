@@ -13,21 +13,23 @@
 // limitations under the License.
 
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 public static class GvrUIHelpers {
-    /// Finds the meters scale for the local coordinate system
-    /// of the root canvas that contains the canvasObject passed in.
-    public static float GetMetersToCanvasScale(Transform canvasObject) {
-        Canvas canvas = canvasObject.GetComponentInParent<Canvas>();
-        if (canvas == null) {
-            return 0.0f;
-        }
-
-        if (!canvas.isRootCanvas) {
-            canvas = canvas.rootCanvas;
-        }
-
-        float metersToCanvasScale = canvas.transform.localScale.x;
-        return metersToCanvasScale;
+  /// Finds the meters scale for the local coordinate system
+  /// of the root canvas that contains the canvasObject passed in.
+  public static float GetMetersToCanvasScale(Transform canvasObject) {
+    Canvas canvas = canvasObject.GetComponentInParent<Canvas>();
+    if (canvas == null) {
+      return 0.0f;
     }
+
+    if (!canvas.isRootCanvas) {
+      canvas = canvas.rootCanvas;
+    }
+
+    float metersToCanvasScale = canvas.transform.localScale.x;
+    return metersToCanvasScale;
+  }
 }

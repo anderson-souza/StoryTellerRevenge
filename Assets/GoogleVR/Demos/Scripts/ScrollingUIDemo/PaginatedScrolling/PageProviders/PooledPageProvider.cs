@@ -14,6 +14,7 @@
 
 using UnityEngine;
 using UnityEngine.Assertions;
+using System.Collections;
 
 /// Example page provider that shows how to use Object Pooling to
 /// re-use pages instead of re-allocating them as the player scrolls.
@@ -21,61 +22,61 @@ using UnityEngine.Assertions;
 /// Doing this will significantly improve performance by preventing garbage collection and
 /// reducing time spent allocating memory.
 public class PooledPageProvider : MonoBehaviour, IPageProvider {
-    [Tooltip("The prefab for each page.")]
-    public GameObject pagePrefab;
+  [Tooltip("The prefab for each page.")]
+  public GameObject pagePrefab;
 
-    /// The spacing between pages in local coordinates.
-    [Tooltip("The spacing between pages.")]
-    public float spacing = 2000.0f;
+  /// The spacing between pages in local coordinates.
+  [Tooltip("The spacing between pages.")]
+  public float spacing = 2000.0f;
 
-    [SerializeField]
-    [Tooltip("The number of pages.")]
-    [Range(1, 200)]
-    private int NumPages = 100;
+  [SerializeField]
+  [Tooltip("The number of pages.")]
+  [Range(1, 200)]
+  private int NumPages = 100;
 
-    private string prefabName;
+  private string prefabName;
 
-    private GameObjectPool Pool {
-        get {
-            ObjectPoolManager poolManager = ObjectPoolManager.Instance;
-            Assert.IsNotNull(poolManager);
+  private GameObjectPool Pool {
+    get {
+      ObjectPoolManager poolManager = ObjectPoolManager.Instance;
+      Assert.IsNotNull(poolManager);
 
-            GameObjectPool pool = poolManager.GetPool<GameObjectPool>(prefabName);
+      GameObjectPool pool = poolManager.GetPool<GameObjectPool>(prefabName);
 
-            if (pool == null) {
-                pool = new GameObjectPool(pagePrefab, 2);
-                poolManager.AddPool(prefabName, pool);
-            }
+      if (pool == null) {
+        pool = new GameObjectPool(pagePrefab, 2);
+        poolManager.AddPool(prefabName, pool);
+      }
 
-            return pool;
-        }
+      return pool;
     }
+  }
 
-    void Awake() {
-        Assert.IsNotNull(pagePrefab);
-        prefabName = pagePrefab.name;
-    }
+  void Awake() {
+    Assert.IsNotNull(pagePrefab);
+    prefabName = pagePrefab.name;
+  }
 
-    public float GetSpacing() {
-        return spacing;
-    }
+  public float GetSpacing() {
+    return spacing;
+  }
 
-    public int GetNumberOfPages() {
-        return NumPages;
-    }
+  public int GetNumberOfPages() {
+    return NumPages;
+  }
 
-    public RectTransform ProvidePage(int index) {
-        GameObject pageTransform = Pool.Borrow();
-        RectTransform page = pageTransform.GetComponent<RectTransform>();
+  public RectTransform ProvidePage(int index) {
+    GameObject pageTransform = Pool.Borrow();
+    RectTransform page = pageTransform.GetComponent<RectTransform>();
 
-        Vector2 middleAnchor = new Vector2(0.5f, 0.5f);
-        page.anchorMax = middleAnchor;
-        page.anchorMin = middleAnchor;
+    Vector2 middleAnchor = new Vector2(0.5f, 0.5f);
+    page.anchorMax = middleAnchor;
+    page.anchorMin = middleAnchor;
 
-        return page;
-    }
+    return page;
+  }
 
-    public void RemovePage(int index, RectTransform page) {
-        Pool.Return(page.gameObject);
-    }
+  public void RemovePage(int index, RectTransform page) {
+    Pool.Return(page.gameObject);
+  }
 }

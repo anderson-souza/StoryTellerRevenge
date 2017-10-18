@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using UnityEngine;
+using System.Collections;
 
 /// Represents an object tracked by controller input.
 /// Manages the active status of the tracked controller based on controller connection status.
@@ -24,112 +25,112 @@ using UnityEngine;
 /// Propogates a _GvrBaseArmModel_ to all _IGvrArmModelReceivers_ underneath this object
 /// so that they can follow the pose from the arm model.
 public class GvrTrackedController : MonoBehaviour {
-    /// Reference to the object that represents the Laser.
-    public GvrLaserVisual laserVisual;
+  /// Reference to the object that represents the Laser.
+  public GvrLaserVisual laserVisual;
 
-    /// Reference to the object that represents the Controller.
-    public GvrControllerVisual controllerVisual;
+  /// Reference to the object that represents the Controller.
+  public GvrControllerVisual controllerVisual;
 
-    [SerializeField]
-    private GvrBaseArmModel armModel;
+  [SerializeField]
+  private GvrBaseArmModel armModel;
 
-    [SerializeField]
-    private bool isLaserVisualEnabled = true;
+  [SerializeField]
+  private bool isLaserVisualEnabled = true;
 
-    [SerializeField]
-    private bool isControllerVisualEnabled = true;
+  [SerializeField]
+  private bool isControllerVisualEnabled = true;
 
-    [SerializeField]
-    private bool isVisibleWhenDisconnected = false;
+  [SerializeField]
+  private bool isVisibleWhenDisconnected = false;
 
-    public GvrBaseArmModel ArmModel {
-        get {
-            return armModel;
-        }
-        set {
-            if (armModel == value) {
-                return;
-            }
+  public GvrBaseArmModel ArmModel {
+    get {
+      return armModel;
+    }
+    set {
+      if (armModel == value) {
+        return;
+      }
 
-            armModel = value;
-            PropagateArmModel();
-        }
+      armModel = value;
+      PropagateArmModel();
+    }
+  }
+
+  public bool IsLaserVisualEnabled {
+    get {
+      return isLaserVisualEnabled;
+    }
+    set {
+      if (isLaserVisualEnabled == value) {
+        return;
+      }
+
+      isLaserVisualEnabled = value;
+      RefreshActiveStatus();
+    }
+  }
+
+  public bool IsControllerVisualEnabled {
+    get {
+      return isControllerVisualEnabled;
+    }
+    set {
+      if (isControllerVisualEnabled == value) {
+        return;
+      }
+
+      isControllerVisualEnabled = value;
+      RefreshActiveStatus();
+    }
+  }
+
+  public void PropagateArmModel() {
+    IGvrArmModelReceiver[] receivers =
+      GetComponentsInChildren<IGvrArmModelReceiver>(true);
+
+    for (int i = 0; i < receivers.Length; i++) {
+      IGvrArmModelReceiver receiver = receivers[i];
+      receiver.ArmModel = armModel;
+    }
+  }
+
+  void Start() {
+    PropagateArmModel();
+    RefreshActiveStatus();
+  }
+
+  void Update() {
+    RefreshActiveStatus();
+  }
+
+  private bool IsControllerConnected() {
+    return GvrControllerInput.State == GvrConnectionState.Connected;
+  }
+
+  private void RefreshActiveStatus() {
+    bool isVisible = isVisibleWhenDisconnected || IsControllerConnected();
+
+    if (laserVisual != null) {
+      laserVisual.gameObject.SetActive(IsLaserVisualEnabled && isVisible);
     }
 
-    public bool IsLaserVisualEnabled {
-        get {
-            return isLaserVisualEnabled;
-        }
-        set {
-            if (isLaserVisualEnabled == value) {
-                return;
-            }
-
-            isLaserVisualEnabled = value;
-            RefreshActiveStatus();
-        }
+    if (controllerVisual != null) {
+      controllerVisual.gameObject.SetActive(IsControllerVisualEnabled && isVisible);
     }
-
-    public bool IsControllerVisualEnabled {
-        get {
-            return isControllerVisualEnabled;
-        }
-        set {
-            if (isControllerVisualEnabled == value) {
-                return;
-            }
-
-            isControllerVisualEnabled = value;
-            RefreshActiveStatus();
-        }
-    }
-
-    public void PropagateArmModel() {
-        IGvrArmModelReceiver[] receivers =
-            GetComponentsInChildren<IGvrArmModelReceiver>(true);
-
-        for (int i = 0; i < receivers.Length; i++) {
-            IGvrArmModelReceiver receiver = receivers[i];
-            receiver.ArmModel = armModel;
-        }
-    }
-
-    void Start() {
-        PropagateArmModel();
-        RefreshActiveStatus();
-    }
-
-    void Update() {
-        RefreshActiveStatus();
-    }
-
-    private bool IsControllerConnected() {
-        return GvrControllerInput.State == GvrConnectionState.Connected;
-    }
-
-    private void RefreshActiveStatus() {
-        bool isVisible = isVisibleWhenDisconnected || IsControllerConnected();
-
-        if (laserVisual != null) {
-            laserVisual.gameObject.SetActive(IsLaserVisualEnabled && isVisible);
-        }
-
-        if (controllerVisual != null) {
-            controllerVisual.gameObject.SetActive(IsControllerVisualEnabled && isVisible);
-        }
-    }
+  }
 
 #if UNITY_EDITOR
-    /// If the "armModel" serialized field is changed while the application is playing
-    /// by using the inspector in the editor, then we need to call the PropagateArmModel
-    /// to ensure all children IGvrArmModelReceiver are updated.
-    /// Outside of the editor, this can't happen because the arm model can only change when
-    /// a Setter is called that automatically calls PropagateArmModel.
-    void OnValidate() {
-        if (Application.isPlaying && isActiveAndEnabled) {
-            PropagateArmModel();
-        }
+  /// If the "armModel" serialized field is changed while the application is playing
+  /// by using the inspector in the editor, then we need to call the PropagateArmModel
+  /// to ensure all children IGvrArmModelReceiver are updated.
+  /// Outside of the editor, this can't happen because the arm model can only change when
+  /// a Setter is called that automatically calls PropagateArmModel.
+  void OnValidate() {
+    if (Application.isPlaying && isActiveAndEnabled) {
+      PropagateArmModel();
     }
+  }
 #endif  // UNITY_EDITOR
 
 }

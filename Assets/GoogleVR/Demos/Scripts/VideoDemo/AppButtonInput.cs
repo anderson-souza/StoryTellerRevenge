@@ -15,20 +15,20 @@
 using UnityEngine;
 
 namespace GVR.Input {
-    /// <summary>
-    /// Provides controller app button input through UnityEvents.
-    /// </summary>
-    public class AppButtonInput : MonoBehaviour {
-        public ButtonEvent OnAppUp;
-        public ButtonEvent OnAppDown;
+  /// <summary>
+  /// Provides controller app button input through UnityEvents.
+  /// </summary>
+  public class AppButtonInput : MonoBehaviour {
+    public ButtonEvent OnAppUp;
+    public ButtonEvent OnAppDown;
 
-        void Update() {
-            if (GvrControllerInput.AppButtonUp)
-                OnAppUp.Invoke();
+    void Update() {
+      if (GvrControllerInput.AppButtonUp)
+        OnAppUp.Invoke();
 
-            if (GvrControllerInput.AppButtonDown)
-                OnAppDown.Invoke();
-        }
-
+      if (GvrControllerInput.AppButtonDown)
+        OnAppDown.Invoke();
     }
+
+  }
 }

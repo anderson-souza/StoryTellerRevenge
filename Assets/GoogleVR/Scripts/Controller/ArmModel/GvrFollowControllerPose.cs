@@ -13,63 +13,64 @@
 // limitations under the License.
 
 using UnityEngine;
+using System.Collections;
 
 /// This script positions and rotates the transform that it is attached to
 /// according to a pose in the arm model. See GvrArmModel.cs for details.
 public class GvrFollowControllerPose : MonoBehaviour, IGvrArmModelReceiver {
-    public enum Pose {
-        ControllerFromHead,
-        PointerFromController
+  public enum Pose {
+    ControllerFromHead,
+    PointerFromController
+  }
+
+  /// Determines which pose to set the position and rotation to.
+  public Pose pose;
+
+  public GvrBaseArmModel ArmModel {
+    get {
+      return armModel;
+    } set {
+      armModel = value;
+    }
+  }
+
+  /// Source for the controller's poses.
+  [SerializeField]
+  private GvrBaseArmModel armModel;
+
+  void OnEnable() {
+    // Update the position using OnPostControllerInputUpdated.
+    // This way, the position and rotation will be correct for the entire frame
+    // so that it doesn't matter what order Updates get called in.
+    GvrControllerInput.OnPostControllerInputUpdated += OnPostControllerInputUpdated;
+  }
+
+  void OnDisable() {
+    GvrControllerInput.OnPostControllerInputUpdated -= OnPostControllerInputUpdated;
+  }
+
+  private void OnPostControllerInputUpdated() {
+    if (armModel == null) {
+      return;
     }
 
-    /// Determines which pose to set the position and rotation to.
-    public Pose pose;
+    Vector3 position;
+    Quaternion rotation;
 
-    public GvrBaseArmModel ArmModel {
-        get {
-            return armModel;
-        } set {
-            armModel = value;
-        }
+    switch (pose) {
+      case Pose.ControllerFromHead:
+        position = ArmModel.ControllerPositionFromHead;
+        rotation = ArmModel.ControllerRotationFromHead;
+        break;
+      case Pose.PointerFromController:
+        position = ArmModel.PointerPositionFromController;
+        rotation = ArmModel.PointerRotationFromController;
+        break;
+      default:
+        throw new System.Exception("Invalid mode.");
     }
 
-    /// Source for the controller's poses.
-    [SerializeField]
-    private GvrBaseArmModel armModel;
-
-    void OnEnable() {
-        // Update the position using OnPostControllerInputUpdated.
-        // This way, the position and rotation will be correct for the entire frame
-        // so that it doesn't matter what order Updates get called in.
-        GvrControllerInput.OnPostControllerInputUpdated += OnPostControllerInputUpdated;
-    }
-
-    void OnDisable() {
-        GvrControllerInput.OnPostControllerInputUpdated -= OnPostControllerInputUpdated;
-    }
-
-    private void OnPostControllerInputUpdated() {
-        if (armModel == null) {
-            return;
-        }
-
-        Vector3 position;
-        Quaternion rotation;
-
-        switch (pose) {
-            case Pose.ControllerFromHead:
-                position = ArmModel.ControllerPositionFromHead;
-                rotation = ArmModel.ControllerRotationFromHead;
-                break;
-            case Pose.PointerFromController:
-                position = ArmModel.PointerPositionFromController;
-                rotation = ArmModel.PointerRotationFromController;
-                break;
-            default:
-                throw new System.Exception("Invalid mode.");
-        }
-
-        transform.localPosition = position;
-        transform.localRotation = rotation;
-    }
+    transform.localPosition = position;
+    transform.localRotation = rotation;
+  }
 }

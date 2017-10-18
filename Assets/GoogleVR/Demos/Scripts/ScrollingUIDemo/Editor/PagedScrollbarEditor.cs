@@ -12,23 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.UI;
+using System.Collections;
 
 [CustomEditor(typeof(PagedScrollBar))]
 public class PagedScrollbarEditor : ScrollbarEditor {
-    private SerializedProperty pagedScrollRect;
+  private SerializedProperty pagedScrollRect;
 
-    protected override void OnEnable() {
-        base.OnEnable();
-        pagedScrollRect = serializedObject.FindProperty(PagedScrollBar.PAGED_SCROLL_RECT_PROP_NAME);
-    }
+  protected override void OnEnable() {
+    base.OnEnable();
+    pagedScrollRect = serializedObject.FindProperty(PagedScrollBar.PAGED_SCROLL_RECT_PROP_NAME);
+  }
 
-    public override void OnInspectorGUI() {
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(pagedScrollRect);
-        serializedObject.ApplyModifiedProperties();
+  public override void OnInspectorGUI() {
+    serializedObject.Update();
+    EditorGUILayout.PropertyField(pagedScrollRect);
+    serializedObject.ApplyModifiedProperties();
 
-        base.OnInspectorGUI();
-    }
+    base.OnInspectorGUI();
+  }
 }

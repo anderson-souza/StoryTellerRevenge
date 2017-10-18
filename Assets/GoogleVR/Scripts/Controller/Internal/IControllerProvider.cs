@@ -14,24 +14,25 @@
 
 /// @cond
 namespace Gvr.Internal {
-    /// Internal interface that abstracts an implementation of a controller.
-    ///
-    /// Each platform has a different concrete implementation of a Controller Provider.
-    /// For example, if running on the Unity Editor, we use an implementation that
-    /// communicates with the controller emulator via USB or WiFi. If running on a real
-    /// Android device, we use an implementation that uses the underlying Daydream controller API.
-    interface IControllerProvider {
-        /// True if controller has battery status support.
-        bool SupportsBatteryStatus { get; }
+  /// Internal interface that abstracts an implementation of a controller.
+  ///
+  /// Each platform has a different concrete implementation of a Controller Provider.
+  /// For example, if running on the Unity Editor, we use an implementation that
+  /// communicates with the controller emulator via USB or WiFi. If running on a real
+  /// Android device, we use an implementation that uses the underlying Daydream controller API.
+  interface IControllerProvider {
+    /// True if controller has battery status support.
+    bool SupportsBatteryStatus { get; }
 
-        /// Notifies the controller provider that the application has paused.
-        void OnPause();
+    /// Notifies the controller provider that the application has paused.
+    void OnPause();
 
-        /// Notifies the controller provider that the application has resumed.
-        void OnResume();
+    /// Notifies the controller provider that the application has resumed.
+    void OnResume();
 
-        /// Reads the controller's current state and stores it in outState.
-        void ReadState(ControllerState outState);
-    }
+    /// Reads the controller's current state and stores it in outState.
+    void ReadState(ControllerState outState);
+  }
 }
 /// @endcond
+

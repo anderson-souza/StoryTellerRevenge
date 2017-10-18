@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using UnityEngine;
+using System.Collections;
 
 /// This script is an in interface that provides content pages
 /// for a PagedScrollRect (Paginated Scrolling)
@@ -35,18 +36,18 @@ using UnityEngine;
 /// 3. Page content could be data-driven by ScriptableObjects or some other data file.
 ///
 public interface IPageProvider {
-    /// Returns a float that represents the amount of space between pages
-    /// in coordinates local to the PagedScrollRect.
-    float GetSpacing();
+  /// Returns a float that represents the amount of space between pages
+  /// in coordinates local to the PagedScrollRect.
+  float GetSpacing();
 
-    /// Returns the total number of pages.
-    int GetNumberOfPages();
+  /// Returns the total number of pages.
+  int GetNumberOfPages();
 
-    /// Returns the appropriate page to display at the index passed in.
-    /// This could be implemented by allocating the page, or by just showing it.
-    RectTransform ProvidePage(int index);
+  /// Returns the appropriate page to display at the index passed in.
+  /// This could be implemented by allocating the page, or by just showing it.
+  RectTransform ProvidePage(int index);
 
-    /// Removes the page passed in, as it has been scrolled out of view.
-    /// This could be implemented by destroying the page, or by just hiding it.
-    void RemovePage(int index, RectTransform page);
+  /// Removes the page passed in, as it has been scrolled out of view.
+  /// This could be implemented by destroying the page, or by just hiding it.
+  void RemovePage(int index, RectTransform page);
 }

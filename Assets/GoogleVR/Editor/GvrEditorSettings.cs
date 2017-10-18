@@ -12,21 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using UnityEngine;
 using UnityEditor;
+using System.Collections;
 
 /// A custom editor window used to set editor preferences for GoogleVR.
 /// Editor preferences are editor specific options that help build and test
 /// applications from within the Unity Editor.
 class GvrEditorSettings : EditorWindow {
-    void OnGUI () {
-        // Label for Controller Emulator settings
-        EditorGUILayout.LabelField("Controller Emulator", EditorStyles.boldLabel);
+  void OnGUI () {
+    // Label for Controller Emulator settings
+    EditorGUILayout.LabelField("Controller Emulator", EditorStyles.boldLabel);
 
-        // Option to control Handedness
-        GvrSettings.UserPrefsHandedness oldHandedness = GvrSettings.Handedness;
-        GvrSettings.Handedness = (GvrSettings.UserPrefsHandedness) EditorGUILayout.EnumPopup("Handedness", oldHandedness);
-        if (oldHandedness != GvrSettings.Handedness) {
-            UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
-        }
+    // Option to control Handedness
+    GvrSettings.UserPrefsHandedness oldHandedness = GvrSettings.Handedness;
+    GvrSettings.Handedness = (GvrSettings.UserPrefsHandedness) EditorGUILayout.EnumPopup("Handedness", oldHandedness);
+    if (oldHandedness != GvrSettings.Handedness) {
+      UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
+  }
 }

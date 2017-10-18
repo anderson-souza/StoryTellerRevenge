@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using UnityEngine;
+using System.Collections;
 
 /// Class that will translate the tiles of a page
 /// in a PagedScrollRect based on the page's offset.
@@ -20,19 +21,19 @@ using UnityEngine;
 /// in a staggered fashion relative to the page.
 /// Requires the pages to have a TiledPage script.
 public class TileScrollEffect : BaseScrollEffect {
-    public override void ApplyEffect(UpdateData updateData) {
-        TiledPage tiledPage = updateData.page.GetComponent<TiledPage>();
+  public override void ApplyEffect(BaseScrollEffect.UpdateData updateData) {
+    TiledPage tiledPage = updateData.page.GetComponent<TiledPage>();
 
-        if (tiledPage == null) {
-            Debug.LogError("Page (" + updateData.page.name + ") does not have TiledPage. " +
-                           "Cannot apply TileScrollEffect.");
-            return;
-        }
-
-        /// Calculate the distance between the scroll position and this page.
-        float difference = updateData.scrollOffset - updateData.pageOffset;
-        float clampedDifference = Mathf.Clamp(difference, -updateData.spacing, updateData.spacing);
-
-        tiledPage.ApplyScrollEffect(clampedDifference, updateData.spacing, updateData.isInteractable);
+    if (tiledPage == null) {
+      Debug.LogError("Page (" + updateData.page.name + ") does not have TiledPage. " +
+        "Cannot apply TileScrollEffect.");
+        return;
     }
+
+    /// Calculate the distance between the scroll position and this page.
+    float difference = updateData.scrollOffset - updateData.pageOffset;
+    float clampedDifference = Mathf.Clamp(difference, -updateData.spacing, updateData.spacing);
+
+    tiledPage.ApplyScrollEffect(clampedDifference, updateData.spacing, updateData.isInteractable);
+  }
 }

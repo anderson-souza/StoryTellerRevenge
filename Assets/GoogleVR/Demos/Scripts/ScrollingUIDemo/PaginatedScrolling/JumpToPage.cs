@@ -15,100 +15,101 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 /// Jumps to a specified page in a PagedScrollRect when it is clicked on.
 public class JumpToPage : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
-    [Tooltip("Destination page.")]
-    public RectTransform page;
+  [Tooltip("Destination page.")]
+  public RectTransform page;
 
-    [Tooltip("The transform to modify when the pointer is hovering over this script.")]
-    public RectTransform hoverTransform;
+  [Tooltip("The transform to modify when the pointer is hovering over this script.")]
+  public RectTransform hoverTransform;
 
-    [Range(0.01f, 0.5f)]
-    [Tooltip("Tile forward distance when the pointer over the tile.")]
-    public float hoverPositionZMeters = 0.225f;
+  [Range(0.01f, 0.5f)]
+  [Tooltip("Tile forward distance when the pointer over the tile.")]
+  public float hoverPositionZMeters = 0.225f;
 
-    [Range(1.0f, 10.0f)]
-    [Tooltip("Speed used for lerping the rotation/scale/position of the tile.")]
-    public float interpolationSpeed = 8.0f;
+  [Range(1.0f, 10.0f)]
+  [Tooltip("Speed used for lerping the rotation/scale/position of the tile.")]
+  public float interpolationSpeed = 8.0f;
 
-    private Graphic graphic;
-    private float desiredPositionZ;
+  private Graphic graphic;
+  private float desiredPositionZ;
 
-    /// The scroll rect that owns the destination page.
-    public PagedScrollRect PageOwnerScrollRect {
-        get {
-            if (cachedPagedScrollRect != null) {
-                return cachedPagedScrollRect;
-            }
+  /// The scroll rect that owns the destination page.
+  public PagedScrollRect PageOwnerScrollRect {
+    get {
+      if (cachedPagedScrollRect != null) {
+        return cachedPagedScrollRect;
+      }
 
-            if (page != null) {
-                cachedPagedScrollRect = page.GetComponentInParent<PagedScrollRect>();
-            }
+      if (page != null) {
+        cachedPagedScrollRect = page.GetComponentInParent<PagedScrollRect>();
+      }
 
-            return cachedPagedScrollRect;
-        }
+      return cachedPagedScrollRect;
     }
-    private PagedScrollRect cachedPagedScrollRect;
+  }
+  private PagedScrollRect cachedPagedScrollRect;
 
-    public bool CanClick {
-        get {
-            if (PageOwnerScrollRect != null) {
-                bool isActivePage = PageOwnerScrollRect.ActivePage == page;
-                return !PageOwnerScrollRect.IsMoving && !isActivePage;
-            }
+  public bool CanClick {
+    get {
+      if (PageOwnerScrollRect != null) {
+        bool isActivePage = PageOwnerScrollRect.ActivePage == page;
+        return !PageOwnerScrollRect.IsMoving && !isActivePage;
+      }
 
-            return false;
-        }
+      return false;
     }
+  }
 
-    void Awake() {
-        graphic = GetComponent<Graphic>();
-        if (graphic == null) {
-            Debug.LogWarning("Graphic is null, won't be able to click on JumpToPage.");
-        }
+  void Awake() {
+    graphic = GetComponent<Graphic>();
+    if (graphic == null) {
+      Debug.LogWarning("Graphic is null, won't be able to click on JumpToPage.");
     }
+  }
 
-    void OnEnable() {
-        cachedPagedScrollRect = null;
-    }
+  void OnEnable() {
+    cachedPagedScrollRect = null;
+  }
 
-    void OnDisable() {
-        cachedPagedScrollRect = null;
-    }
+  void OnDisable() {
+    cachedPagedScrollRect = null;
+  }
 
-    void Update() {
-        if (graphic != null) {
-            graphic.raycastTarget = CanClick;
-        }
-
-        float finalDesiredPositionZ = desiredPositionZ;
-        if (!CanClick) {
-            finalDesiredPositionZ = 0.0f;
-        }
-
-        if (hoverTransform != null && finalDesiredPositionZ != hoverTransform.localPosition.z) {
-            Vector3 localPosition = hoverTransform.localPosition;
-            Vector3 desiredPosition = localPosition;
-            desiredPosition.z = finalDesiredPositionZ;
-            localPosition = Vector3.Lerp(localPosition, desiredPosition, Time.deltaTime * interpolationSpeed);
-            hoverTransform.localPosition = localPosition;
-        }
-    }
-    public void OnPointerEnter(PointerEventData eventData) {
-        // Since canvas graphics render facing the negative Z direction,
-        // negative z is the forward direction for a canvas element.
-        float metersToCanvasScale = GvrUIHelpers.GetMetersToCanvasScale(page);
-        desiredPositionZ = -hoverPositionZMeters / metersToCanvasScale;
+  void Update() {
+    if (graphic != null) {
+      graphic.raycastTarget = CanClick;
     }
 
-    public void OnPointerExit(PointerEventData eventData) {
-        desiredPositionZ = 0.0f;
+    float finalDesiredPositionZ = desiredPositionZ;
+    if (!CanClick) {
+      finalDesiredPositionZ = 0.0f;
     }
 
-    public void OnPointerClick(PointerEventData eventData) {
-        if (CanClick) {
-            PageOwnerScrollRect.SnapToVisiblePage(page);
-        }
+    if (hoverTransform != null && finalDesiredPositionZ != hoverTransform.localPosition.z) {
+      Vector3 localPosition = hoverTransform.localPosition;
+      Vector3 desiredPosition = localPosition;
+      desiredPosition.z = finalDesiredPositionZ;
+      localPosition = Vector3.Lerp(localPosition, desiredPosition, Time.deltaTime * interpolationSpeed);
+      hoverTransform.localPosition = localPosition;
     }
+  }
+  public void OnPointerEnter(PointerEventData eventData) {
+    // Since canvas graphics render facing the negative Z direction,
+    // negative z is the forward direction for a canvas element.
+    float metersToCanvasScale = GvrUIHelpers.GetMetersToCanvasScale(page);
+    desiredPositionZ = -hoverPositionZMeters / metersToCanvasScale;
+  }
+
+  public void OnPointerExit(PointerEventData eventData) {
+    desiredPositionZ = 0.0f;
+  }
+
+  public void OnPointerClick(PointerEventData eventData) {
+    if (CanClick) {
+      PageOwnerScrollRect.SnapToVisiblePage(page);
+    }
+  }
 }

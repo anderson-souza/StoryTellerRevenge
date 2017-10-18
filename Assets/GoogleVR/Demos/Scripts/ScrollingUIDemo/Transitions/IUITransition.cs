@@ -14,8 +14,10 @@
 
 using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public interface IUITransition {
-    void TransitionIn(Transform toTransition, Action completeCallback, Action interruptCallback);
-    void TransitionOut(Transform toTransition, Action completeCallback, Action interruptCallback);
+  void TransitionIn(Transform toTransition, Action completeCallback, Action interruptCallback);
+  void TransitionOut(Transform toTransition, Action completeCallback, Action interruptCallback);
 }

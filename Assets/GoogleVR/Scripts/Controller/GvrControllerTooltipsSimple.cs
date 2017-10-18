@@ -16,55 +16,56 @@
 // GVR native integration.
 
 using UnityEngine;
+using System.Collections;
 
 /// A lightweight tooltip designed to minimize draw calls.
 [ExecuteInEditMode]
 public class GvrControllerTooltipsSimple : MonoBehaviour, IGvrArmModelReceiver {
 
-    private MeshRenderer tooltipRenderer;
+  private MeshRenderer tooltipRenderer;
 
-    public GvrBaseArmModel ArmModel { get; set; }
+  public GvrBaseArmModel ArmModel { get; set; }
 
-    private MaterialPropertyBlock materialPropertyBlock;
-    private int colorId;
+  private MaterialPropertyBlock materialPropertyBlock;
+  private int colorId;
 
-    void Awake() {
-        Initialize();
+  void Awake() {
+    Initialize();
+  }
+
+  void OnEnable() {
+    GvrControllerInput.OnPostControllerInputUpdated += OnPostControllerInputUpdated;
+  }
+
+  void OnDisable() {
+    GvrControllerInput.OnPostControllerInputUpdated -= OnPostControllerInputUpdated;
+  }
+
+  void OnValidate() {
+    if (!Application.isPlaying){
+      Initialize();
+      OnVisualUpdate();
     }
+  }
 
-    void OnEnable() {
-        GvrControllerInput.OnPostControllerInputUpdated += OnPostControllerInputUpdated;
+  private void Initialize(){
+    if(tooltipRenderer == null){
+      tooltipRenderer = GetComponent<MeshRenderer>();
     }
-
-    void OnDisable() {
-        GvrControllerInput.OnPostControllerInputUpdated -= OnPostControllerInputUpdated;
+    if(materialPropertyBlock == null){
+      materialPropertyBlock = new MaterialPropertyBlock();
     }
+    colorId = Shader.PropertyToID("_Color");
+  }
 
-    void OnValidate() {
-        if (!Application.isPlaying){
-            Initialize();
-            OnVisualUpdate();
-        }
-    }
+  private void OnPostControllerInputUpdated() {
+    OnVisualUpdate();
+  }
 
-    private void Initialize(){
-        if(tooltipRenderer == null){
-            tooltipRenderer = GetComponent<MeshRenderer>();
-        }
-        if(materialPropertyBlock == null){
-            materialPropertyBlock = new MaterialPropertyBlock();
-        }
-        colorId = Shader.PropertyToID("_Color");
-    }
+  protected void OnVisualUpdate () {
 
-    private void OnPostControllerInputUpdated() {
-        OnVisualUpdate();
-    }
-
-    protected void OnVisualUpdate () {
-
-        float alpha = ArmModel != null ? ArmModel.TooltipAlphaValue : 1.0f;
-        materialPropertyBlock.SetColor(colorId, new Color(1,1,1,alpha));
-        tooltipRenderer.SetPropertyBlock(materialPropertyBlock);
-    }
+    float alpha = ArmModel != null ? ArmModel.TooltipAlphaValue : 1.0f;
+    materialPropertyBlock.SetColor(colorId, new Color(1,1,1,alpha));
+    tooltipRenderer.SetPropertyBlock(materialPropertyBlock);
+  }
 }

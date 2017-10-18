@@ -13,21 +13,22 @@
 // limitations under the License.
 
 using UnityEngine;
+using System.Collections;
 
 
 [System.Obsolete("Replaced by GvrPointerInputModule.")]
 [AddComponentMenu("")]
 public class GvrPointerManager : MonoBehaviour {
-    public static GvrBasePointer Pointer {
-        get {
-            return GvrPointerInputModule.Pointer as GvrBasePointer;
-        }
-        set {
-            GvrPointerInputModule.Pointer = value;
-        }
+  public static GvrBasePointer Pointer {
+    get {
+      return GvrPointerInputModule.Pointer as GvrBasePointer;
     }
+    set {
+      GvrPointerInputModule.Pointer = value;
+    }
+  }
 
-    public static void OnPointerCreated(GvrBasePointer createdPointer) {
-        GvrPointerInputModule.OnPointerCreated(createdPointer);
-    }
+  public static void OnPointerCreated(GvrBasePointer createdPointer) {
+    GvrPointerInputModule.OnPointerCreated(createdPointer);
+  }
 }

@@ -18,6 +18,7 @@
 using System;
 using UnityEditor;
 using UnityEditor.Build;
+using UnityEngine;
 using UnityEditorInternal.VR;
 
 class MyCustomBuildProcessor : IPreprocessBuild, IPostprocessBuild

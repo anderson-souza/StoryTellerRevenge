@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using UnityEngine;
+using System.Collections;
 
 /// GVR audio listener component that enhances AudioListener to provide advanced spatial audio
 /// features.
@@ -20,29 +21,29 @@ using UnityEngine;
 /// There should be only one instance of this which is attached to the AudioListener's game object.
 [AddComponentMenu("GoogleVR/Audio/GvrAudioListener")]
 public class GvrAudioListener : MonoBehaviour {
-    /// Global gain in decibels to be applied to the processed output.
-    public float globalGainDb = 0.0f;
+  /// Global gain in decibels to be applied to the processed output.
+  public float globalGainDb = 0.0f;
 
-    /// Global layer mask to be used in occlusion detection.
-    public LayerMask occlusionMask = -1;
+  /// Global layer mask to be used in occlusion detection.
+  public LayerMask occlusionMask = -1;
 
-    /// Audio rendering quality of the system.
-    [SerializeField]
-    private GvrAudio.Quality quality = GvrAudio.Quality.High;
+  /// Audio rendering quality of the system.
+  [SerializeField]
+  private GvrAudio.Quality quality = GvrAudio.Quality.High;
 
-    void Awake () {
-        GvrAudio.Initialize(this, quality);
-    }
+  void Awake () {
+    GvrAudio.Initialize(this, quality);
+  }
 
-    void OnEnable () {
-        GvrAudio.UpdateAudioListener(globalGainDb, occlusionMask);
-    }
+  void OnEnable () {
+    GvrAudio.UpdateAudioListener(globalGainDb, occlusionMask);
+  }
 
-    void OnDestroy () {
-        GvrAudio.Shutdown(this);
-    }
+  void OnDestroy () {
+    GvrAudio.Shutdown(this);
+  }
 
-    void Update () {
-        GvrAudio.UpdateAudioListener(globalGainDb, occlusionMask);
-    }
+  void Update () {
+    GvrAudio.UpdateAudioListener(globalGainDb, occlusionMask);
+  }
 }

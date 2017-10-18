@@ -13,36 +13,37 @@
 // limitations under the License.
 
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 /// Used by GameObjectPool to manage the pooled GameObjects within the scene graph.
 public class GameObjectPoolController : MonoBehaviour {
-    private Stack<GameObject> toReparentStack;
+  private Stack<GameObject> toReparentStack;
 
-    public void Initialize(int capacity) {
-        transform.localScale = Vector3.zero;
-        toReparentStack = new Stack<GameObject>(capacity);
-    }
+  public void Initialize(int capacity) {
+    transform.localScale = Vector3.zero;
+    toReparentStack = new Stack<GameObject>(capacity);
+  }
 
-    public void OnBorrowed(GameObject borrowedObject) {
-        // The borrowed object will always be the most recently pooled object.
-        if (toReparentStack.Count > 0) {
-            toReparentStack.Pop();
-        }
+  public void OnBorrowed(GameObject borrowedObject) {
+    // The borrowed object will always be the most recently pooled object.
+    if (toReparentStack.Count > 0) {
+      toReparentStack.Pop();
     }
+  }
 
-    public void OnPooled(GameObject pooledObject) {
-        toReparentStack.Push(pooledObject);
-    }
+  public void OnPooled(GameObject pooledObject) {
+    toReparentStack.Push(pooledObject);
+  }
 
-    void LateUpdate() {
-        if (toReparentStack.Count > 0) {
-            var enumerator = toReparentStack.GetEnumerator();
-            while (enumerator.MoveNext()) {
-                GameObject obj = enumerator.Current;
-                obj.transform.SetParent(transform, false);
-            }
-            toReparentStack.Clear();
-        }
+  void LateUpdate() {
+    if (toReparentStack.Count > 0) {
+      var enumerator = toReparentStack.GetEnumerator();
+      while (enumerator.MoveNext()) {
+        GameObject obj = enumerator.Current;
+        obj.transform.SetParent(transform, false);
+      }
+      toReparentStack.Clear();
     }
+  }
 }
