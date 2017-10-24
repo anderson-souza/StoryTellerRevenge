@@ -22,6 +22,7 @@ public class TitleController : MonoBehaviour
 
     private void FadeInOutCanvas()
     {
+        StopCoroutine("FadeCanvas");
         StartCoroutine("FadeCanvas");
     }
 

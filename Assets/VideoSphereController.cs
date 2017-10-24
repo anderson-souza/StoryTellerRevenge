@@ -6,13 +6,12 @@ using UnityEngine.Video;
 
 public class VideoSphereController : MonoBehaviour {
     private VideoPlayer _videoPlayer;
-
     private TitleController _titleController;
     private int _actualVideo;
     private ParticleSystem _particleSystem;
-    private GvrVideoPlayerTexture _gvrVideoPlayerTexture;
-    private Action callbackVideo;
-
+    private GameObject _canvasPath;
+    private GameObject _creditsCanvas;
+    private GameObject _canvasControls;
     private readonly List<Videos> _videoses = new List<Videos>();
 
     // Use this for initialization
@@ -20,84 +19,71 @@ public class VideoSphereController : MonoBehaviour {
         _videoPlayer = GetComponent<VideoPlayer>();
         _titleController = FindObjectOfType<TitleController>();
         _particleSystem = FindObjectOfType<ParticleSystem>();
-        _gvrVideoPlayerTexture = GetComponent<GvrVideoPlayerTexture>();
+        _canvasPath = GameObject.Find("CanvasPath");
+        _creditsCanvas = GameObject.Find("CanvasCredits");
+        _canvasControls = GameObject.Find("CanvasControls");
 
         _videoses.Add(new Videos("Car",
-            "https://onedrive.live.com/download?cid=E29AE0C338BE57F1&resid=E29AE0C338BE57F1%2114809&authkey=AEeOLV6Z_hT2uMU"));
+            "https://anderson-souza.000webhostapp.com/videos/carExported_injected.mp4"));
         _videoses.Add(new Videos("Waterfall",
-            "file://E:/Udacity/360 Media Production Assets/Exported files/Waterfall.mp4"));
+            "https://anderson-souza.000webhostapp.com/videos/Waterfall.mp4"));
         _videoses.Add(new Videos("Rock",
-            "file://E:/Udacity/360 Media Production Assets/Exported files/Big Pointy Rock.mp4"));
-        _videoses.Add(new Videos("Cliff", "file://E:/Udacity/360 Media Production Assets/Exported files/Cliff.mp4"));
-        _videoses.Add(new Videos("Lava Field",
-            "file://E:/Udacity/360 Media Production Assets/Exported files/lavaFields.mp4"));
+            "https://anderson-souza.000webhostapp.com/videos/Big%20Pointy%20Rock.mp4"));
+        _videoses.Add(new Videos("Cliff", "https://anderson-souza.000webhostapp.com/videos/Cliff.mp4"));
+        _videoses.Add(new Videos("Lava Fields",
+            "https://anderson-souza.000webhostapp.com/videos/lavaFields.mp4"));
 
-        NewVideo(0);
+        NewVideo(0); //Start the first video
 
         // Each time we reach the end, calls the function EndReached
         _videoPlayer.loopPointReached += EndReached;
-        _gvrVideoPlayerTexture.SetOnVideoEventCallback(GvrVideoCallback);
     }
 
-    private void GvrVideoCallback(int eventId) {
-        switch (eventId) {
-            case (int) GvrVideoPlayerTexture.VideoEvents.VideoReady:
-                Debug.Log("Video Ready");
-                break;
-            case (int) GvrVideoPlayerTexture.VideoEvents.VideoStartPlayback:
-                Debug.Log("Video start");
-                break;
-            default:
-                Debug.Log("Another event");
-                break;
-        }
-    }
-
+    //Receives the position of the array of videos
     public void NewVideo(int position) {
-        //Receives the position of the array of videos
-        Debug.Log("Started a new video");
+        Debug.Log("Started a new video at position: " + position);
         _actualVideo = position;
         if (_actualVideo == 0) {
             //If is the first video, play the Particles
             _particleSystem.Play();
+            _canvasPath.SetActive(true);
         }
         else {
             _particleSystem.Stop();
+            _canvasPath.SetActive(false);
         }
-        //_videoPlayer.url = _videoses[position].Url;
-        _titleController.ChangeTitle(_videoses[position].Title); //Change the title
-
-        _gvrVideoPlayerTexture.videoURL = _videoses[position].Url;
-        _gvrVideoPlayerTexture.videoType = GvrVideoPlayerTexture.VideoType.Dash;
-        _gvrVideoPlayerTexture.videoProviderId = string.Empty;
-        _gvrVideoPlayerTexture.videoContentID = string.Empty;
-        _gvrVideoPlayerTexture.CleanupVideo();
-        _gvrVideoPlayerTexture.ReInitializeVideo();
+        _videoPlayer.url = _videoses[position].Url;
         PlayVideo();
     }
 
     public void PlayVideo() {
-        //_videoPlayer.Play();
-        _gvrVideoPlayerTexture.Play();
+        _titleController.ChangeTitle(_videoses[_actualVideo].Title); //Change the title
+        _videoPlayer.Play();
     }
 
     public void PauseVideo() {
-        //_videoPlayer.Pause();
-        _gvrVideoPlayerTexture.Pause();
+        _videoPlayer.Pause();
     }
 
     public void RestartVideo() {
-        /*_videoPlayer.Stop();
-        _videoPlayer.Play();*/
-        _gvrVideoPlayerTexture.ReInitializeVideo();
+        StopVideo();
+        PlayVideo();
+    }
+
+    public void StopVideo() {
+        _videoPlayer.Stop();
     }
 
     private void EndReached(VideoPlayer vp) {
-        if (_videoses.Count < _actualVideo) {
-            NewVideo(_actualVideo++);
+        Debug.Log("End of the video. ActualVideo: " + _actualVideo + ". _videoses.Count: " + _videoses.Count);
+        if (_actualVideo < _videoses.Count) {
+            _actualVideo++;
+            NewVideo(_actualVideo);
         }
         else {
             //Show Credits
+            _creditsCanvas.SetActive(true);
+            _canvasControls.SetActive(false);
         }
     }
 }
